@@ -42,8 +42,9 @@ markdown_extensions:
   - md_in_html
 
 nav:
-  - Home: index.md
-      - Modern Java: notes/01-modern-java/index.md:
+  - Home:
+      - Overview: index.md
+      - Modern Java: notes/01-modern-java/index.md
   - Modern Java:
       - Overview: notes/01-modern-java/index.md
       - Records: notes/01-modern-java/01-records.md
