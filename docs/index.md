@@ -1,20 +1,24 @@
 # Backend Academy
 
-Backend Academy is my personal roadmap for becoming a stronger Java backend engineer.
+Backend Academy is a collection of notes, examples, and deep dives covering modern Java and backend engineering.
 
-The goal is not just to memorize syntax or pass interviews, but to deeply understand how backend systems work: Java, concurrency, JVM internals, Spring/Quarkus, AWS, databases, distributed systems, networking, and Kubernetes.
+The goal is to build a solid understanding of the technologies commonly used in modern backend systems, including Java, concurrency, JVM internals, Spring, Quarkus, AWS, databases, distributed systems, networking, and Kubernetes.
+
+Rather than focusing only on syntax or interview preparation, each topic explores the motivation behind a feature, how it works internally, and how it is applied in real-world backend development.
+
+Although these notes were originally created as part of my own learning journey, they are written as a practical reference for anyone interested in modern Java and backend development.
 
 ## Learning Philosophy
 
-For every topic, I want to understand:
+Every topic follows the same approach:
 
 1. Why does this exist?
 2. What problem does it solve?
 3. How does it work internally?
-4. When should I use it?
-5. When should I NOT use it?
+4. When should it be used?
+5. When should it not be used?
 6. How is it used in real backend systems?
-7. How would I explain it in an interview?
+7. How would you explain it in an interview?
 
 ## Roadmap
 
