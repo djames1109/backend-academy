@@ -8,14 +8,14 @@ theme:
   name: material
   palette:
     - scheme: default
-      primary: '#00695C'
-      accent: '#00695C'
+      primary: cyan
+      accent: cyan
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - scheme: slate
-      primary: '#00695C'
-      accent: '#00695C'
+      primary: cyan
+      accent: cyan
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
