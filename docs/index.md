@@ -18,7 +18,7 @@ For every topic, I want to understand:
 
 ## Roadmap
 
-### 01 - Modern Java
+### [01 - Modern Java](notes/01-modern-java/index.md)
 
 - [x] [Records](notes/01-modern-java/01-records.md)
 - [ ] Sealed Classes
