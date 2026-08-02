@@ -20,7 +20,7 @@ For every topic, I want to understand:
 
 ### [01 - Modern Java](notes/01-modern-java/index.md)
 
-- [x] [Records](notes/01-modern-java/01-records.md)
+- [Records](notes/01-modern-java/01-records.md)
 - [ ] Sealed Classes
 - [ ] Pattern Matching for instanceof
 - [ ] Switch Expressions

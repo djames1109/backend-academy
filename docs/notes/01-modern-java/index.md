@@ -5,7 +5,7 @@ This module covers Java features from Java 17 onward, especially features that m
 
 ## Topics
 
-- ✅ Records
+- [Records](01-records.md)
 - [ ] Sealed Classes
 - [ ] Pattern Matching for instanceof
 - [ ] Switch Expressions
