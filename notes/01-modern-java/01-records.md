@@ -8,6 +8,22 @@ Instead of writing constructors, getters, `equals()`, `hashCode()`, and `toStrin
 
 More importantly, records communicate intent. They tell other developers that this type represents immutable data rather than mutable state or business behavior.
 
+## Why Records Exist
+
+Before records, Java developers wrote countless classes whose only purpose was to transport data.
+
+These classes often contained little more than fields, constructors, getters, and implementations of `equals()`, `hashCode()`, and `toString()`.
+
+This repetitive code became known as *boilerplate*.
+
+Records reduce that boilerplate while making the intent of the type explicit.
+
+A record tells both the compiler and other developers:
+
+> This object represents immutable data.
+
+Instead of focusing on how the class is implemented, records let you focus on what data the class represents.
+
 ---
 
 ## The Problem
@@ -63,7 +79,7 @@ public record User(
 
 Java automatically generates:
 
-- Canonical constructor (a constructor that accepts all parameteres in the same order as they are declared)
+- Canonical constructor (a constructor that accepts all parameters in the same order as they are declared)
 - Accessor methods
 - `equals()`
 - `hashCode()`

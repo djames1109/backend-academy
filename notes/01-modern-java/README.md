@@ -8,7 +8,7 @@ This module covers Java features from Java 17 onward, especially features that m
 
 ## Topics
 
-- [ ] Records
+- [✅] Records
 - [ ] Sealed Classes
 - [ ] Pattern Matching for instanceof
 - [ ] Switch Expressions
