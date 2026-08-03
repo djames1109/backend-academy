@@ -25,7 +25,7 @@ Every topic follows the same approach:
 ### [01 - Modern Java](notes/01-modern-java/index.md)
 
 - [Records](notes/01-modern-java/01-records.md)
-- [ ] Sealed Classes
+- [Sealed Classes](notes/01-modern-java/02-sealed-classes.md)
 - [ ] Pattern Matching for instanceof
 - [ ] Switch Expressions
 - [ ] Pattern Matching for switch

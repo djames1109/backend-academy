@@ -7,7 +7,7 @@ Rather than covering every language change, the topics focus on features that im
 ## Topics
 
 - [Records](01-records.md)
-- [ ] Sealed Classes
+- [Sealed Classes](02-sealed-classes.md)
 - [ ] Pattern Matching for `instanceof`
 - [ ] Switch Expressions
 - [ ] Pattern Matching for `switch`
