@@ -67,7 +67,18 @@ Every topic follows the same approach:
 - [ ] Configuration
 - [ ] Reflection vs Build-time Processing
 
-### 05 - AWS
+### [05 - Messaging and Event-Driven Systems](notes/05-messaging/index.md)
+
+- [Kafka Fundamentals](notes/05-messaging/01-kafka-fundamentals.md)
+- [Kafka Producer](notes/05-messaging/02-kafka-producer.md)
+- [ ] Kafka Consumer
+- [ ] Consumer Groups and Partition Assignment
+- [ ] Offset Management
+- [ ] Delivery Semantics
+- [ ] Kafka Transactions
+- [ ] Error Handling and Dead Letter Topics
+
+### 06 - AWS
 
 - [ ] IAM
 - [ ] Lambda
@@ -80,7 +91,7 @@ Every topic follows the same approach:
 - [ ] RDS
 - [ ] CloudWatch
 
-### 06 - System Design
+### 07 - System Design
 
 - [ ] Scalability
 - [ ] Availability
@@ -93,7 +104,7 @@ Every topic follows the same approach:
 - [ ] CQRS
 - [ ] Event Sourcing
 
-### 07 - Databases
+### 08 - Databases
 
 - [ ] Indexes
 - [ ] B-Trees
@@ -105,7 +116,7 @@ Every topic follows the same approach:
 - [ ] Partitioning
 - [ ] Replication
 
-### 08 - Networking
+### 09 - Networking
 
 - [ ] HTTP
 - [ ] DNS
@@ -116,7 +127,7 @@ Every topic follows the same approach:
 - [ ] WebSockets
 - [ ] Server-Sent Events
 
-### 09 - Kubernetes
+### 10 - Kubernetes
 
 - [ ] Pods
 - [ ] Deployments

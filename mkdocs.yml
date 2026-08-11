@@ -47,3 +47,7 @@ nav:
       - Overview: notes/01-modern-java/index.md
       - Records: notes/01-modern-java/01-records.md
       - Sealed Classes: notes/01-modern-java/02-sealed-classes.md
+  - Messaging and Event-Driven Systems:
+      - Overview: notes/05-messaging/index.md
+      - Kafka Fundamentals: notes/05-messaging/01-kafka-fundamentals.md
+      - Kafka Producer: notes/05-messaging/02-kafka-producer.md
