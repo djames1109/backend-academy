@@ -71,7 +71,7 @@ Every topic follows the same approach:
 
 - [Kafka Fundamentals](notes/05-messaging/01-kafka-fundamentals.md)
 - [Kafka Producer](notes/05-messaging/02-kafka-producer.md)
-- [ ] Kafka Consumer
+- [Kafka Consumer](notes/05-messaging/03-kafka-consumer.md)]
 - [ ] Consumer Groups and Partition Assignment
 - [ ] Offset Management
 - [ ] Delivery Semantics

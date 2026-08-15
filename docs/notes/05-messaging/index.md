@@ -10,7 +10,7 @@ Rather than treating messaging as simply sending data from one application to an
 
 - [Kafka Fundamentals](01-kafka-fundamentals.md)
 - [Kafka Producer](02-kafka-producer.md)
-- [ ] Kafka Consumer
+- [Kafka Consumer](03-kafka-consumer.md)]
 - [ ] Consumer Groups and Partition Assignment
 - [ ] Offset Management
 - [ ] Delivery Semantics

@@ -51,3 +51,4 @@ nav:
       - Overview: notes/05-messaging/index.md
       - Kafka Fundamentals: notes/05-messaging/01-kafka-fundamentals.md
       - Kafka Producer: notes/05-messaging/02-kafka-producer.md
+      - Kafka Consumer: notes/05-messaging/03-kafka-consumer.md
