@@ -1,0 +1,3023 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal roadmap for becoming a stronger Java backend engineer">
+      
+      
+        <meta name="author" content="DJames">
+      
+      
+      
+        <link rel="prev" href="../01-kafka-fundamentals/">
+      
+      
+        <link rel="next" href="../03-kafka-consumer/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Kafka Producer - Backend Academy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kafka-producer" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Backend Academy" class="md-header__button md-logo" aria-label="Backend Academy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Backend Academy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kafka Producer
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/djames1109/backend-academy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../01-modern-java/" class="md-tabs__link">
+          
+  
+  
+  Modern Java
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Messaging and Event-Driven Systems
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Backend Academy" class="md-nav__button md-logo" aria-label="Backend Academy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Backend Academy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/djames1109/backend-academy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modern Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modern Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-modern-java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-modern-java/01-records/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-modern-java/02-sealed-classes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sealed Classes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Messaging and Event-Driven Systems
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Messaging and Event-Driven Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-kafka-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Producer
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Producer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#publishing-with-kafkatemplate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Publishing with KafkaTemplate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asynchronous-publishing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asynchronous Publishing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#synchronous-publishing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Synchronous Publishing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-acknowledgements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Acknowledgements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Producer Acknowledgements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#acks0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        acks=0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acks1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        acks=1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acksall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        acks=all
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mininsyncreplicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        min.insync.replicas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Retries
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Producer Retries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrybackoffms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retry.backoff.ms
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-timeouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Timeouts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Producer Timeouts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requesttimeoutms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        request.timeout.ms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverytimeoutms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delivery.timeout.ms
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retries-vs-deliverytimeoutms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retries vs delivery.timeout.ms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#batching-and-lingerms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batching and linger.ms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-idempotence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Idempotence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Producer Idempotence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idempotence-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotence Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-producer-idempotence-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Producer Idempotence Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-idempotence-vs-application-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Idempotence vs Application Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-flight-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In-Flight Requests
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="In-Flight Requests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#send-vs-produce-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        send() vs Produce Request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-in-flight-requests-matter-for-idempotence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why In-Flight Requests Matter for Idempotence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-configuration-vs-topic-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Configuration vs Topic Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Producer Configuration vs Topic Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#producer-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topic-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topic Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Putting It Together
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Mistakes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assuming-a-successful-publish-means-the-event-was-consumed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming a successful publish means the event was consumed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-acks1-means-the-record-is-fully-replicated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming acks=1 means the record is fully replicated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#treating-mininsyncreplicas-as-a-producer-property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Treating min.insync.replicas as a producer property
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementing-immediate-application-retries-for-every-producer-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementing immediate application retries for every producer failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-producer-idempotence-provides-business-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming producer idempotence provides business idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-every-send-creates-a-new-broker-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming every send() creates a new broker connection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-one-send-equals-one-network-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming one send() equals one network request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-corner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Corner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interview Corner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-difference-between-acks0-acks1-and-acksall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the difference between acks=0, acks=1, and acks=all?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-difference-between-requesttimeoutms-and-deliverytimeoutms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the difference between request.timeout.ms and delivery.timeout.ms?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-does-kafka-producer-retry-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why does Kafka Producer retry messages?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-problem-does-producer-idempotence-solve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What problem does producer idempotence solve?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-producer-idempotence-prevent-an-application-from-publishing-the-same-event-twice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Does producer idempotence prevent an application from publishing the same event twice?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-an-in-flight-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is an in-flight request?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-does-maxinflightrequestsperconnection-matter-for-idempotence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why does max.in.flight.requests.per.connection matter for idempotence?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules-of-thumb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules of Thumb
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-kafka-consumer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Consumer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-kafka-transaction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Transactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-consumer-groups-and-offsets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Consumer Groups and Offsets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-delivery-semantics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Delivery Semantics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-event-driven-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event-Driven Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avro
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Avro
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/01-avro-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avro Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/02-schema-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/03-avro-with-java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avro with Java and Spring Kafka
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#publishing-with-kafkatemplate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Publishing with KafkaTemplate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asynchronous-publishing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asynchronous Publishing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#synchronous-publishing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Synchronous Publishing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-acknowledgements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Acknowledgements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Producer Acknowledgements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#acks0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        acks=0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acks1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        acks=1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acksall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        acks=all
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mininsyncreplicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        min.insync.replicas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Retries
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Producer Retries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrybackoffms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retry.backoff.ms
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-timeouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Timeouts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Producer Timeouts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requesttimeoutms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        request.timeout.ms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverytimeoutms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delivery.timeout.ms
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retries-vs-deliverytimeoutms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retries vs delivery.timeout.ms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#batching-and-lingerms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batching and linger.ms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-idempotence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Idempotence
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Producer Idempotence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idempotence-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotence Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-producer-idempotence-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Producer Idempotence Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-idempotence-vs-application-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Idempotence vs Application Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-flight-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In-Flight Requests
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="In-Flight Requests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#send-vs-produce-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        send() vs Produce Request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-in-flight-requests-matter-for-idempotence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why In-Flight Requests Matter for Idempotence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-configuration-vs-topic-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Configuration vs Topic Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Producer Configuration vs Topic Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#producer-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topic-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topic Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Putting It Together
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Mistakes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assuming-a-successful-publish-means-the-event-was-consumed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming a successful publish means the event was consumed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-acks1-means-the-record-is-fully-replicated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming acks=1 means the record is fully replicated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#treating-mininsyncreplicas-as-a-producer-property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Treating min.insync.replicas as a producer property
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementing-immediate-application-retries-for-every-producer-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementing immediate application retries for every producer failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-producer-idempotence-provides-business-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming producer idempotence provides business idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-every-send-creates-a-new-broker-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming every send() creates a new broker connection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-one-send-equals-one-network-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming one send() equals one network request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-corner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Corner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interview Corner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-difference-between-acks0-acks1-and-acksall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the difference between acks=0, acks=1, and acks=all?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-difference-between-requesttimeoutms-and-deliverytimeoutms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the difference between request.timeout.ms and delivery.timeout.ms?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-does-kafka-producer-retry-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why does Kafka Producer retry messages?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-problem-does-producer-idempotence-solve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What problem does producer idempotence solve?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-producer-idempotence-prevent-an-application-from-publishing-the-same-event-twice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Does producer idempotence prevent an application from publishing the same event twice?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-an-in-flight-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is an in-flight request?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-does-maxinflightrequestsperconnection-matter-for-idempotence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why does max.in.flight.requests.per.connection matter for idempotence?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules-of-thumb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules of Thumb
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="kafka-producer">Kafka Producer</h1>
+<h2 id="introduction">Introduction</h2>
+<p>A Kafka producer is responsible for publishing records to Kafka topics.</p>
+<p>In Spring Boot applications, Spring Kafka provides <code>KafkaTemplate</code> as a high-level abstraction for publishing records using the Kafka producer client.</p>
+<p>Publishing a record may appear to be a simple operation, but several decisions affect how reliably and efficiently records are delivered:</p>
+<ul>
+<li>Should the producer wait for acknowledgement from Kafka?</li>
+<li>How many replicas must receive the record?</li>
+<li>What happens when a temporary failure occurs?</li>
+<li>How long should the producer keep retrying?</li>
+<li>How can duplicate records caused by retries be prevented?</li>
+<li>How can multiple requests be sent efficiently while preserving ordering?</li>
+</ul>
+<p>Understanding these behaviors is important when building reliable event-driven applications.</p>
+<hr />
+<h2 id="publishing-with-kafkatemplate">Publishing with KafkaTemplate</h2>
+<p>Spring Kafka provides <code>KafkaTemplate</code> for publishing records.</p>
+<p>A record can contain both a key and a value.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="s">"product-created"</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">event</span><span class="p">.</span><span class="na">productId</span><span class="p">(),</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="n">event</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">);</span>
+</code></pre></div>
+<p>In this example:</p>
+<ul>
+<li><code>product-created</code> is the topic.</li>
+<li><code>event.productId()</code> is the record key.</li>
+<li><code>event</code> is the record value.</li>
+</ul>
+<p>The key can influence which partition receives the record.</p>
+<p>Records with the same key are normally routed to the same partition, assuming the number of partitions does not change.</p>
+<hr />
+<h2 id="asynchronous-publishing">Asynchronous Publishing</h2>
+<p><code>KafkaTemplate.send()</code> is asynchronous and returns a <code>CompletableFuture</code>.</p>
+<p>This allows the calling thread to continue without waiting for Kafka to acknowledge the record.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">var</span><span class="w"> </span><span class="n">future</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="s">"product-created"</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">event</span><span class="p">.</span><span class="na">productId</span><span class="p">(),</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="n">event</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">);</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">future</span><span class="p">.</span><span class="na">whenComplete</span><span class="p">((</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">throwable</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">throwable</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="c1">// handle failure</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">        </span><span class="c1">// publish completed successfully</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">});</span>
+</code></pre></div>
+<p>The result contains metadata about the published record.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">var</span><span class="w"> </span><span class="n">metadata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="na">getRecordMetadata</span><span class="p">();</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">metadata</span><span class="p">.</span><span class="na">topic</span><span class="p">();</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">metadata</span><span class="p">.</span><span class="na">partition</span><span class="p">();</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">metadata</span><span class="p">.</span><span class="na">offset</span><span class="p">();</span>
+</code></pre></div>
+<p>This identifies where the record was stored.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Topic:     product-created
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Partition: 1
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Offset:    42
+</code></pre></div>
+<hr />
+<h2 id="synchronous-publishing">Synchronous Publishing</h2>
+<p>The same asynchronous API can be made effectively synchronous by waiting for the returned future.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">SendResult</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">ProductCreatedEvent</span><span class="o">&gt;</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">        </span><span class="s">"product-created"</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">        </span><span class="n">event</span><span class="p">.</span><span class="na">productId</span><span class="p">(),</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">        </span><span class="n">event</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="p">).</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+<p>Calling <code>.get()</code> blocks the calling thread until the send operation completes or fails.</p>
+<p>For example, if this happens while processing an HTTP request:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>HTTP Request
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>     |
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>     v
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Request Thread
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>     |
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>     | KafkaTemplate.send(...).get()
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>     |
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>     | waiting...
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>     |
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>     v
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>Kafka acknowledgement
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>     |
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>     v
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>Continue processing
+</code></pre></div>
+<p>The request-handling thread remains blocked while waiting for Kafka.</p>
+<p>Asynchronous publishing avoids this blocking behavior when the application does not need the result before continuing.</p>
+<blockquote>
+<p>A successful producer acknowledgement means Kafka accepted the record according to the configured acknowledgement policy. It does not mean that a consumer has already processed the record.</p>
+</blockquote>
+<hr />
+<h2 id="producer-acknowledgements">Producer Acknowledgements</h2>
+<p>The <code>acks</code> producer configuration determines what acknowledgement is required before a publish is considered successful.</p>
+<p>The main options are:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>acks=0
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>acks=1
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>acks=all
+</code></pre></div>
+<p>These provide different trade-offs between latency and durability.</p>
+<hr />
+<h3 id="acks0">acks=0</h3>
+<p>With:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">      </span><span class="nt">acks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</code></pre></div>
+<p>the producer does not wait for acknowledgement from the broker.</p>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Producer --------------------&gt; Broker
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>         record
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>Producer continues immediately
+</code></pre></div>
+<p>This provides the weakest delivery guarantee because the producer cannot rely on a broker acknowledgement confirming that the record was stored.</p>
+<hr />
+<h3 id="acks1">acks=1</h3>
+<p>With:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">      </span><span class="nt">acks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</code></pre></div>
+<p>the partition leader must accept the record before the producer receives a successful acknowledgement.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Producer                 Leader                 Follower
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>   | ---- Record -------&gt; |
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>   |                      | store
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>   | &lt;------ ACK -------- |
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>   |                      |
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>   |                      | ---- replicate ----&gt; |
+</code></pre></div>
+<p>The leader does not need to wait for followers to replicate the record before acknowledging it.</p>
+<p>This means there is a possible failure window.</p>
+<p>If the leader acknowledges the record and fails before a follower replicates it, the acknowledged record may be lost.</p>
+<hr />
+<h3 id="acksall">acks=all</h3>
+<p>With:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">      </span><span class="nt">acks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+</code></pre></div>
+<p>the producer requests the strongest acknowledgement behavior.</p>
+<p>The leader waits for the in-sync replicas to acknowledge the write.</p>
+<p>This configuration works together with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>min.insync.replicas
+</code></pre></div>
+<p>which is configured on the Kafka topic or broker side.</p>
+<hr />
+<h2 id="mininsyncreplicas">min.insync.replicas</h2>
+<p><code>min.insync.replicas</code> defines the minimum number of in-sync replicas that must be available for an <code>acks=all</code> write to succeed.</p>
+<p>With <code>acks=all</code>, the leader waits for all current in-sync replicas to acknowledge the write. <code>min.insync.replicas</code> controls how small the ISR is allowed to become before Kafka rejects the write instead of accepting a weaker durability condition.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>replication.factor = 3
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>min.insync.replicas = 2
+</code></pre></div>
+<p>Suppose all three replicas are available:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Broker 1 → Leader       ISR
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>Broker 2 → Follower     ISR
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>Broker 3 → Follower     ISR
+</code></pre></div>
+<p>An <code>acks=all</code> write can succeed.</p>
+<p>If one broker becomes unavailable:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Broker 1 → Leader       ISR
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>Broker 2 → Follower     ISR
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>Broker 3 → Down
+</code></pre></div>
+<p>there are still two in-sync replicas.</p>
+<p>The write can still succeed.</p>
+<p>However, if another replica becomes unavailable:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Broker 1 → Leader       ISR
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>Broker 2 → Down
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>Broker 3 → Down
+</code></pre></div>
+<p>then:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Current ISR = 1
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>min.insync.replicas = 2
+</code></pre></div>
+<p>Kafka cannot satisfy the durability requirement, so the <code>acks=all</code> write cannot successfully complete while this condition remains.</p>
+<p>This creates an important trade-off:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>Stronger durability
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>        ↑
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>        |
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>acks=all + min.insync.replicas
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>        |
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>        ↓
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>Potentially lower availability during broker failures
+</code></pre></div>
+<p><code>min.insync.replicas</code> does not provide the same protection when the producer uses <code>acks=0</code> or <code>acks=1</code>.</p>
+<hr />
+<h2 id="producer-retries">Producer Retries</h2>
+<p>Publishing can fail because of temporary problems.</p>
+<p>Examples include:</p>
+<ul>
+<li>Temporary network failures</li>
+<li>Broker unavailability</li>
+<li>Leader changes</li>
+<li>Leader elections</li>
+<li>Insufficient in-sync replicas</li>
+</ul>
+<p>Some failures are <strong>retriable</strong>, meaning the problem may disappear if the operation is attempted again.</p>
+<p>Other failures are <strong>non-retriable</strong>.</p>
+<p>For example, if a record exceeds the configured maximum message size, repeatedly sending the same record will not solve the problem.</p>
+<p>Kafka Producer determines whether an error is retriable and automatically handles retries for retriable producer failures.</p>
+<p>The application does not normally need to implement this retry loop itself.</p>
+<hr />
+<h3 id="retries">retries</h3>
+<p>The <code>retries</code> property limits how many retries Kafka Producer can perform for retriable failures.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</code></pre></div>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>Send
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a> |
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a> X temporary failure
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a> |
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>Retry
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a> |
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a> X temporary failure
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a> |
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>Retry
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a> |
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a> ✓ success
+</code></pre></div>
+<p>Modern Kafka uses a very large default value for <code>retries</code>.</p>
+<p>Rather than primarily controlling delivery through a small retry count, Kafka generally recommends using <code>delivery.timeout.ms</code> to bound how long delivery may continue.</p>
+<hr />
+<h3 id="retrybackoffms">retry.backoff.ms</h3>
+<p>The producer does not need to retry immediately after a retriable failure.</p>
+<p><code>retry.backoff.ms</code> controls the base delay associated with retrying requests.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">        </span><span class="nt">retry.backoff.ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+</code></pre></div>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>Send
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a> |
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a> X failure
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a> |
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>Wait / backoff
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a> |
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>Retry
+</code></pre></div>
+<p>Backoff prevents the producer from repeatedly sending requests in a tight loop while a temporary problem is occurring.</p>
+<hr />
+<h2 id="producer-timeouts">Producer Timeouts</h2>
+<p>Several timeout-related properties control different parts of record delivery.</p>
+<p>Two important properties are:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>request.timeout.ms
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>delivery.timeout.ms
+</code></pre></div>
+<p>They represent different scopes.</p>
+<hr />
+<h3 id="requesttimeoutms">request.timeout.ms</h3>
+<p><code>request.timeout.ms</code> controls how long the producer waits for a response to an individual broker request.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">        </span><span class="nt">request.timeout.ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span>
+</code></pre></div>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>Producer ------------------------&gt; Broker
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>           request
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>         waiting...
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>         waiting...
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>       request timeout
+</code></pre></div>
+<p>A request timing out does not necessarily mean the entire record delivery process is immediately over.</p>
+<p>If the failure is retriable and the overall delivery deadline has not been reached, Kafka may retry.</p>
+<hr />
+<h3 id="deliverytimeoutms">delivery.timeout.ms</h3>
+<p><code>delivery.timeout.ms</code> places an overall bound on how long the producer may spend trying to deliver a record.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">        </span><span class="nt">delivery.timeout.ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120000</span>
+</code></pre></div>
+<p>It covers the overall delivery process, including time spent:</p>
+<ul>
+<li>Waiting before sending</li>
+<li>Sending requests</li>
+<li>Waiting for broker responses</li>
+<li>Backing off</li>
+<li>Retrying</li>
+</ul>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>|------------------- delivery.timeout.ms -------------------|
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>      request          backoff          request
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>     |-------|        |-------|        |-------|
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>         X                                ✓
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>      failure                           success
+</code></pre></div>
+<p>This is different from <code>request.timeout.ms</code>, which applies to an individual request.</p>
+<p>A useful mental model is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>request.timeout.ms
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>    → How long can this broker request wait?
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>delivery.timeout.ms
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>    → How long can delivery of this record continue overall?
+</code></pre></div>
+<p>The producer may stop before the delivery timeout if another stopping condition is reached first, such as a non-retriable error or an explicitly configured retry limit.</p>
+<hr />
+<h2 id="retries-vs-deliverytimeoutms">retries vs delivery.timeout.ms</h2>
+<p><code>retries</code> and <code>delivery.timeout.ms</code> do not conflict.</p>
+<p>They place different limits on the producer's retry behavior.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>retries = 10
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>delivery.timeout.ms = 120000
+</code></pre></div>
+<p>The producer stops retrying when the applicable limit is reached.</p>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>                 delivery.timeout.ms
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>       &lt;----------------------------------&gt;
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>Attempt 1
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>    |
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>    X
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>    |
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>backoff
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>    |
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a>Attempt 2
+<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a>    |
+<a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a>    X
+<a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a>    |
+<a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a>backoff
+<a id="__codelineno-30-15" name="__codelineno-30-15" href="#__codelineno-30-15"></a>    |
+<a id="__codelineno-30-16" name="__codelineno-30-16" href="#__codelineno-30-16"></a>Attempt 3
+<a id="__codelineno-30-17" name="__codelineno-30-17" href="#__codelineno-30-17"></a>    |
+<a id="__codelineno-30-18" name="__codelineno-30-18" href="#__codelineno-30-18"></a>    ✓
+</code></pre></div>
+<p>If the configured retries are exhausted before the delivery timeout, the delivery can fail earlier.</p>
+<p>If a very large retry count is configured, the delivery timeout can become the practical upper bound.</p>
+<p>For this reason, modern Kafka commonly uses a large retry count while controlling the overall retry window through <code>delivery.timeout.ms</code>.</p>
+<hr />
+<h2 id="batching-and-lingerms">Batching and linger.ms</h2>
+<p>Kafka Producer can batch multiple records together before sending them to a broker.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>Application
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>send(A)
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>send(B)
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>send(C)
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>    |
+<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>    v
+<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>
+<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a>Kafka Producer
+<a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a>
+<a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a>A ─┐
+<a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a>B ─┼──&gt; Batch ───&gt; Broker
+<a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>C ─┘
+</code></pre></div>
+<p>Batching reduces the number of network requests and can improve throughput.</p>
+<p><code>linger.ms</code> controls how long the producer may wait for additional records before sending a batch.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="w">        </span><span class="nt">linger.ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</code></pre></div>
+<p>Increasing <code>linger.ms</code> can allow more records to accumulate in a batch.</p>
+<p>This introduces a trade-off:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>Higher linger
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>    |
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>    +--&gt; potentially larger batches
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>    +--&gt; potentially better throughput
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>    +--&gt; potentially better compression
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>    |
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>    +--&gt; potentially higher latency
+</code></pre></div>
+<hr />
+<h2 id="producer-idempotence">Producer Idempotence</h2>
+<p>Retries introduce an important problem.</p>
+<p>Consider the following scenario:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>Producer                           Broker
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>   | ---- Event A --------------&gt; |
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>   |                               | Store A
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>   |                               |
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>   | &lt;--------- ACK ------------- X
+<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a>   |
+<a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a>   | acknowledgement was lost
+</code></pre></div>
+<p>The producer cannot safely assume that the broker did not receive the record.</p>
+<p>If it retries:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>Producer                           Broker
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>   | ---- Event A --------------&gt; |
+</code></pre></div>
+<p>without duplicate protection, the same logical producer attempt could result in another record being appended.</p>
+<p>Producer idempotence is designed to prevent duplicates caused by this kind of producer retry.</p>
+<p>It can be explicitly enabled using:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">        </span><span class="nt">enable.idempotence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Kafka enables producer idempotence by default when the producer configuration is compatible with it.</p>
+<p>Explicitly configuring it can make the intended behavior clear.</p>
+<hr />
+<h3 id="idempotence-requirements">Idempotence Requirements</h3>
+<p>Producer idempotence requires compatible producer settings.</p>
+<p>The important requirements are:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>acks = all
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>retries &gt; 0
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>max.in.flight.requests.per.connection &lt;= 5
+</code></pre></div>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">      </span><span class="nt">acks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="w">        </span><span class="nt">enable.idempotence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="w">        </span><span class="nt">max.in.flight.requests.per.connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</code></pre></div>
+<p>If idempotence is explicitly enabled while incompatible properties are explicitly configured, the producer configuration can fail.</p>
+<hr />
+<h2 id="how-producer-idempotence-works">How Producer Idempotence Works</h2>
+<p>Kafka producer idempotence does not inspect the contents of an event to determine whether it is a duplicate.</p>
+<p>It does not perform checks such as:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>eventId == previousEventId
+</code></pre></div>
+<p>Instead, Kafka uses protocol-level information between the producer and broker.</p>
+<p>Kafka uses concepts including:</p>
+<ul>
+<li>Producer ID</li>
+<li>Sequence numbers</li>
+</ul>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>Producer ID = 123
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>Partition 0
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a>
+<a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a>Event A → sequence 0
+<a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a>Event B → sequence 1
+<a id="__codelineno-40-7" name="__codelineno-40-7" href="#__codelineno-40-7"></a>Event C → sequence 2
+</code></pre></div>
+<p>The producer includes this information when sending batches to Kafka.</p>
+<p>The broker tracks producer sequence information and can use it to identify duplicate retries and preserve ordering.</p>
+<p>This mechanism is handled internally by the Kafka producer client and broker.</p>
+<p>Applications do not manually assign Kafka producer sequence numbers.</p>
+<hr />
+<h2 id="producer-idempotence-vs-application-idempotency">Producer Idempotence vs Application Idempotency</h2>
+<p>Kafka producer idempotence should not be confused with application-level or business-level idempotency.</p>
+<p>Producer idempotence protects against duplicate records caused by <strong>Kafka Producer's internal retry mechanism</strong>.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>Application
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>send(A)
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>   |
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>   v
+<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>Kafka Producer
+<a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a>
+<a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a>attempt #1 ------&gt; failure / uncertain acknowledgement
+<a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a>
+<a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a>attempt #2 ------&gt; retry
+<a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a>
+<a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a>attempt #3 ------&gt; retry
+</code></pre></div>
+<p>The application called <code>send()</code> once.</p>
+<p>Kafka Producer performed multiple attempts internally.</p>
+<p>Producer idempotence protects this scenario.</p>
+<p>However, consider:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">);</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="c1">// application later decides to publish again</span>
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a>
+<a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">);</span>
+</code></pre></div>
+<p>These are separate application-level send operations.</p>
+<p>Producer idempotence should not be treated as business-level deduplication for these separate sends.</p>
+<p>Even if both records contain:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>eventId = 12345
+</code></pre></div>
+<p>Kafka producer idempotence is not checking the business identifier and deciding whether the event has already been published.</p>
+<p>Application-level duplicate prevention requires a separate idempotency strategy.</p>
+<hr />
+<h2 id="in-flight-requests">In-Flight Requests</h2>
+<p>Kafka Producer can send multiple network requests to a broker without waiting for every previous request to receive a response.</p>
+<p>A request that has been sent but has not yet received its response is considered <strong>in flight</strong>.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>Producer                              Broker
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>Request A ---------------------------&gt;
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a>Request B ---------------------------&gt;
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a>Request C ---------------------------&gt;
+<a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a>Request D ---------------------------&gt;
+<a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a>Request E ---------------------------&gt;
+<a id="__codelineno-44-8" name="__codelineno-44-8" href="#__codelineno-44-8"></a>
+<a id="__codelineno-44-9" name="__codelineno-44-9" href="#__codelineno-44-9"></a>          &lt;--------------------------- Response A
+<a id="__codelineno-44-10" name="__codelineno-44-10" href="#__codelineno-44-10"></a>          &lt;--------------------------- Response B
+<a id="__codelineno-44-11" name="__codelineno-44-11" href="#__codelineno-44-11"></a>          &lt;--------------------------- Response C
+</code></pre></div>
+<p>These are separate requests.</p>
+<p>They are not five retries of the same request.</p>
+<p>The maximum number of requests that may be outstanding on a broker connection is controlled by:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>max.in.flight.requests.per.connection
+</code></pre></div>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="w">        </span><span class="nt">max.in.flight.requests.per.connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</code></pre></div>
+<p>This means that up to five requests may be waiting for responses on a connection at the same time.</p>
+<hr />
+<h3 id="send-vs-produce-request">send() vs Produce Request</h3>
+<p>An application call to:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(...)</span>
+</code></pre></div>
+<p>should not be thought of as being exactly equivalent to one Kafka network request.</p>
+<p>Kafka Producer buffers records and groups them into batches.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>Application
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>send(A)
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a>send(B)
+<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a>send(C)
+<a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a>send(D)
+<a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a>
+<a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a>       |
+<a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a>       v
+<a id="__codelineno-48-10" name="__codelineno-48-10" href="#__codelineno-48-10"></a>
+<a id="__codelineno-48-11" name="__codelineno-48-11" href="#__codelineno-48-11"></a>Kafka Producer
+<a id="__codelineno-48-12" name="__codelineno-48-12" href="#__codelineno-48-12"></a>
+<a id="__codelineno-48-13" name="__codelineno-48-13" href="#__codelineno-48-13"></a>A + B ───&gt; Produce Request #1
+<a id="__codelineno-48-14" name="__codelineno-48-14" href="#__codelineno-48-14"></a>C + D ───&gt; Produce Request #2
+<a id="__codelineno-48-15" name="__codelineno-48-15" href="#__codelineno-48-15"></a>
+<a id="__codelineno-48-16" name="__codelineno-48-16" href="#__codelineno-48-16"></a>       |
+<a id="__codelineno-48-17" name="__codelineno-48-17" href="#__codelineno-48-17"></a>       v
+<a id="__codelineno-48-18" name="__codelineno-48-18" href="#__codelineno-48-18"></a>
+<a id="__codelineno-48-19" name="__codelineno-48-19" href="#__codelineno-48-19"></a>Broker
+</code></pre></div>
+<p>Kafka Producer also maintains and reuses connections to Kafka brokers.</p>
+<p>Calling <code>send()</code> multiple times does not normally create a new TCP connection for every record.</p>
+<hr />
+<h2 id="why-in-flight-requests-matter-for-idempotence">Why In-Flight Requests Matter for Idempotence</h2>
+<p>At first, in-flight requests and producer idempotence may appear unrelated.</p>
+<p>Idempotence protects against retries, while in-flight requests are separate outstanding requests.</p>
+<p>They become related when an earlier request needs to be retried while later requests are already in flight.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>Producer                              Broker
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>Request A (seq 0) -------------------&gt;
+<a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a>Request B (seq 1) -------------------&gt;
+<a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a>Request C (seq 2) -------------------&gt;
+</code></pre></div>
+<p>Suppose the broker stores A but its response is lost.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>Broker
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>seq 0 → A ✓
+<a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a>seq 1 → B ✓
+<a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a>seq 2 → C ✓
+</code></pre></div>
+<p>The producer may need to retry A because it does not know that A was successfully stored.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>Retry A (seq 0) --------------------&gt;
+</code></pre></div>
+<p>Because the broker tracks the producer ID and sequence numbers, it can recognize that sequence <code>0</code> was already accepted and avoid appending A again.</p>
+<p>The sequence protocol also helps Kafka preserve ordering when several requests are outstanding while retries occur.</p>
+<p>Kafka therefore limits:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>max.in.flight.requests.per.connection &lt;= 5
+</code></pre></div>
+<p>when producer idempotence is enabled.</p>
+<p>This allows Kafka to maintain the required sequence and duplicate-detection state while still permitting multiple requests to be processed concurrently.</p>
+<hr />
+<h2 id="producer-configuration-vs-topic-configuration">Producer Configuration vs Topic Configuration</h2>
+<p>Producer and topic configurations belong to different parts of Kafka.</p>
+<h3 id="producer-configuration">Producer Configuration</h3>
+<p>These properties control how the application publishes records.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a><span class="w">      </span><span class="nt">key-serializer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">org.apache.kafka.common.serialization.StringSerializer</span>
+<a id="__codelineno-53-5" name="__codelineno-53-5" href="#__codelineno-53-5"></a><span class="w">      </span><span class="nt">value-serializer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">org.springframework.kafka.support.serializer.JacksonJsonSerializer</span>
+<a id="__codelineno-53-6" name="__codelineno-53-6" href="#__codelineno-53-6"></a><span class="w">      </span><span class="nt">acks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+<a id="__codelineno-53-7" name="__codelineno-53-7" href="#__codelineno-53-7"></a><span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<a id="__codelineno-53-8" name="__codelineno-53-8" href="#__codelineno-53-8"></a><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<a id="__codelineno-53-9" name="__codelineno-53-9" href="#__codelineno-53-9"></a><span class="w">        </span><span class="nt">enable.idempotence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-53-10" name="__codelineno-53-10" href="#__codelineno-53-10"></a><span class="w">        </span><span class="nt">max.in.flight.requests.per.connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<a id="__codelineno-53-11" name="__codelineno-53-11" href="#__codelineno-53-11"></a><span class="w">        </span><span class="nt">retry.backoff.ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<a id="__codelineno-53-12" name="__codelineno-53-12" href="#__codelineno-53-12"></a><span class="w">        </span><span class="nt">delivery.timeout.ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120000</span>
+<a id="__codelineno-53-13" name="__codelineno-53-13" href="#__codelineno-53-13"></a><span class="w">        </span><span class="nt">request.timeout.ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000</span>
+<a id="__codelineno-53-14" name="__codelineno-53-14" href="#__codelineno-53-14"></a><span class="w">        </span><span class="nt">linger.ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</code></pre></div>
+<p>Examples include:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key.serializer</code></td>
+<td>Serializer used for record keys</td>
+</tr>
+<tr>
+<td><code>value.serializer</code></td>
+<td>Serializer used for record values</td>
+</tr>
+<tr>
+<td><code>acks</code></td>
+<td>Required acknowledgement level</td>
+</tr>
+<tr>
+<td><code>retries</code></td>
+<td>Retry limit for retriable failures</td>
+</tr>
+<tr>
+<td><code>retry.backoff.ms</code></td>
+<td>Delay/base delay associated with retries</td>
+</tr>
+<tr>
+<td><code>delivery.timeout.ms</code></td>
+<td>Overall delivery deadline</td>
+</tr>
+<tr>
+<td><code>request.timeout.ms</code></td>
+<td>Timeout for an individual broker request</td>
+</tr>
+<tr>
+<td><code>linger.ms</code></td>
+<td>Delay used to allow records to form larger batches</td>
+</tr>
+<tr>
+<td><code>enable.idempotence</code></td>
+<td>Enables duplicate protection for producer retries</td>
+</tr>
+<tr>
+<td><code>max.in.flight.requests.per.connection</code></td>
+<td>Maximum outstanding requests per broker connection</td>
+</tr>
+</tbody>
+</table>
+<p>For JSON values on Spring Kafka 4, use <code>JacksonJsonSerializer</code>, which is based on Jackson 3. The older <code>JsonSerializer</code> class is deprecated for removal.</p>
+<h3 id="topic-configuration">Topic Configuration</h3>
+<p>These properties or settings belong to the Kafka topic.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>partitions = 3
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>replication.factor = 3
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>min.insync.replicas = 2
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>partitions</code></td>
+<td>Number of logical partition logs</td>
+</tr>
+<tr>
+<td><code>replication.factor</code></td>
+<td>Number of replicas for each partition</td>
+</tr>
+<tr>
+<td><code>min.insync.replicas</code></td>
+<td>Minimum ISR required for successful <code>acks=all</code> writes</td>
+</tr>
+</tbody>
+</table>
+<p>The producer and topic configurations work together.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>Producer                          Topic
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>
+<a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a>acks=all -----------------------&gt; min.insync.replicas=2
+<a id="__codelineno-55-4" name="__codelineno-55-4" href="#__codelineno-55-4"></a>
+<a id="__codelineno-55-5" name="__codelineno-55-5" href="#__codelineno-55-5"></a>                                  replication.factor=3
+</code></pre></div>
+<p>The producer determines what acknowledgement it requires, while the topic determines the replication conditions under which that acknowledgement can be satisfied.</p>
+<hr />
+<h2 id="putting-it-together">Putting It Together</h2>
+<p>The producer lifecycle can be viewed as a pipeline:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>Application
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>    |
+<a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a>    | KafkaTemplate.send()
+<a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a>    v
+<a id="__codelineno-56-5" name="__codelineno-56-5" href="#__codelineno-56-5"></a>Kafka Producer
+<a id="__codelineno-56-6" name="__codelineno-56-6" href="#__codelineno-56-6"></a>    |
+<a id="__codelineno-56-7" name="__codelineno-56-7" href="#__codelineno-56-7"></a>    | buffer records
+<a id="__codelineno-56-8" name="__codelineno-56-8" href="#__codelineno-56-8"></a>    | batch records
+<a id="__codelineno-56-9" name="__codelineno-56-9" href="#__codelineno-56-9"></a>    | linger.ms
+<a id="__codelineno-56-10" name="__codelineno-56-10" href="#__codelineno-56-10"></a>    v
+<a id="__codelineno-56-11" name="__codelineno-56-11" href="#__codelineno-56-11"></a>Produce Request
+<a id="__codelineno-56-12" name="__codelineno-56-12" href="#__codelineno-56-12"></a>    |
+<a id="__codelineno-56-13" name="__codelineno-56-13" href="#__codelineno-56-13"></a>    | multiple requests may be in flight
+<a id="__codelineno-56-14" name="__codelineno-56-14" href="#__codelineno-56-14"></a>    v
+<a id="__codelineno-56-15" name="__codelineno-56-15" href="#__codelineno-56-15"></a>Kafka Broker
+<a id="__codelineno-56-16" name="__codelineno-56-16" href="#__codelineno-56-16"></a>    |
+<a id="__codelineno-56-17" name="__codelineno-56-17" href="#__codelineno-56-17"></a>    | acknowledgement according to acks
+<a id="__codelineno-56-18" name="__codelineno-56-18" href="#__codelineno-56-18"></a>    v
+<a id="__codelineno-56-19" name="__codelineno-56-19" href="#__codelineno-56-19"></a>Success
+</code></pre></div>
+<p>If a temporary failure occurs:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>Produce Request
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>    |
+<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a>    X retriable failure
+<a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a>    |
+<a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a>    v
+<a id="__codelineno-57-6" name="__codelineno-57-6" href="#__codelineno-57-6"></a>retry.backoff.ms
+<a id="__codelineno-57-7" name="__codelineno-57-7" href="#__codelineno-57-7"></a>    |
+<a id="__codelineno-57-8" name="__codelineno-57-8" href="#__codelineno-57-8"></a>    v
+<a id="__codelineno-57-9" name="__codelineno-57-9" href="#__codelineno-57-9"></a>Retry
+<a id="__codelineno-57-10" name="__codelineno-57-10" href="#__codelineno-57-10"></a>    |
+<a id="__codelineno-57-11" name="__codelineno-57-11" href="#__codelineno-57-11"></a>    | producer idempotence prevents
+<a id="__codelineno-57-12" name="__codelineno-57-12" href="#__codelineno-57-12"></a>    | duplicate records caused by retries
+<a id="__codelineno-57-13" name="__codelineno-57-13" href="#__codelineno-57-13"></a>    v
+<a id="__codelineno-57-14" name="__codelineno-57-14" href="#__codelineno-57-14"></a>Kafka Broker
+</code></pre></div>
+<p>The entire delivery process is bounded by:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>delivery.timeout.ms
+</code></pre></div>
+<p>while individual broker requests are bounded by:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>request.timeout.ms
+</code></pre></div>
+<p>Together, these configurations allow applications to balance:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>Durability
+<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>Availability
+<a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a>Latency
+<a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a>Throughput
+</code></pre></div>
+<p>depending on the requirements of the system.</p>
+<hr />
+<h2 id="common-mistakes">Common Mistakes</h2>
+<h3 id="assuming-a-successful-publish-means-the-event-was-consumed">Assuming a successful publish means the event was consumed</h3>
+<p>Producer acknowledgement only confirms the producer-side Kafka write according to the configured <code>acks</code> behavior.</p>
+<p>It does not mean that a consumer has processed the event.</p>
+<hr />
+<h3 id="assuming-acks1-means-the-record-is-fully-replicated">Assuming acks=1 means the record is fully replicated</h3>
+<p><code>acks=1</code> only requires the partition leader to acknowledge the record.</p>
+<p>Followers may not have replicated the record when the acknowledgement is returned.</p>
+<hr />
+<h3 id="treating-mininsyncreplicas-as-a-producer-property">Treating min.insync.replicas as a producer property</h3>
+<p><code>min.insync.replicas</code> belongs to the Kafka topic or broker configuration.</p>
+<p>It works together with the producer's <code>acks=all</code> configuration.</p>
+<hr />
+<h3 id="implementing-immediate-application-retries-for-every-producer-failure">Implementing immediate application retries for every producer failure</h3>
+<p>Kafka Producer already handles retriable producer failures internally.</p>
+<p>Adding another retry mechanism around <code>send()</code> without understanding the producer's retry behavior can introduce additional complexity and duplicate-delivery scenarios.</p>
+<hr />
+<h3 id="assuming-producer-idempotence-provides-business-idempotency">Assuming producer idempotence provides business idempotency</h3>
+<p>Producer idempotence protects against duplicates caused by Kafka Producer's internal retries.</p>
+<p>It does not prevent an application from explicitly publishing the same business event multiple times.</p>
+<hr />
+<h3 id="assuming-every-send-creates-a-new-broker-connection">Assuming every send() creates a new broker connection</h3>
+<p>Kafka Producer maintains and reuses broker connections.</p>
+<p>Multiple <code>send()</code> calls do not normally create separate TCP connections.</p>
+<hr />
+<h3 id="assuming-one-send-equals-one-network-request">Assuming one send() equals one network request</h3>
+<p>Kafka Producer buffers and batches records.</p>
+<p>Multiple application-level <code>send()</code> calls may therefore be included in a smaller number of Kafka produce requests.</p>
+<hr />
+<h2 id="interview-corner">Interview Corner</h2>
+<h3 id="what-is-the-difference-between-acks0-acks1-and-acksall">What is the difference between acks=0, acks=1, and acks=all?</h3>
+<p><code>acks=0</code> does not wait for broker acknowledgement.</p>
+<p><code>acks=1</code> requires acknowledgement from the partition leader.</p>
+<p><code>acks=all</code> provides the strongest acknowledgement behavior and works with <code>min.insync.replicas</code> to require sufficient in-sync replication.</p>
+<hr />
+<h3 id="what-is-the-difference-between-requesttimeoutms-and-deliverytimeoutms">What is the difference between request.timeout.ms and delivery.timeout.ms?</h3>
+<p><code>request.timeout.ms</code> limits how long an individual broker request waits for a response.</p>
+<p><code>delivery.timeout.ms</code> limits the overall amount of time allowed to deliver a record, including retries and related delays.</p>
+<hr />
+<h3 id="why-does-kafka-producer-retry-messages">Why does Kafka Producer retry messages?</h3>
+<p>Temporary failures such as network problems, broker failures, or leader changes may resolve without application intervention.</p>
+<p>Kafka Producer can automatically retry these retriable failures.</p>
+<hr />
+<h3 id="what-problem-does-producer-idempotence-solve">What problem does producer idempotence solve?</h3>
+<p>Producer idempotence prevents Kafka Producer's internal retries from causing duplicate records.</p>
+<p>It uses producer IDs and sequence numbers rather than inspecting application-level event identifiers.</p>
+<hr />
+<h3 id="does-producer-idempotence-prevent-an-application-from-publishing-the-same-event-twice">Does producer idempotence prevent an application from publishing the same event twice?</h3>
+<p>No.</p>
+<p>Two explicit calls to <code>send()</code> represent separate application-level send operations.</p>
+<p>Preventing duplicate business operations requires application-level idempotency.</p>
+<hr />
+<h3 id="what-is-an-in-flight-request">What is an in-flight request?</h3>
+<p>An in-flight request is a request that has been sent to a Kafka broker but has not yet received its response.</p>
+<p>Kafka Producer can have multiple requests in flight simultaneously to improve throughput.</p>
+<hr />
+<h3 id="why-does-maxinflightrequestsperconnection-matter-for-idempotence">Why does max.in.flight.requests.per.connection matter for idempotence?</h3>
+<p>An earlier request may need to be retried while later requests are already in flight.</p>
+<p>Kafka uses producer IDs and sequence numbers to detect duplicate retries and preserve ordering.</p>
+<p>Limiting the number of outstanding requests allows Kafka to maintain these guarantees while still supporting concurrent requests.</p>
+<hr />
+<h2 id="rules-of-thumb">Rules of Thumb</h2>
+<ul>
+<li>Prefer asynchronous publishing when the application does not need to wait for the Kafka result.</li>
+<li>Use synchronous publishing only when the application must know the result before continuing.</li>
+<li>Use <code>acks=all</code> when stronger durability is required.</li>
+<li>Configure <code>min.insync.replicas</code> together with an appropriate replication factor.</li>
+<li>Let Kafka Producer handle transient producer retries.</li>
+<li>Prefer bounding retry behavior through <code>delivery.timeout.ms</code> rather than relying only on a small retry count.</li>
+<li>Understand the difference between request timeout and overall delivery timeout.</li>
+<li>Keep producer idempotence enabled unless there is a specific reason to disable it.</li>
+<li>Do not confuse Kafka producer idempotence with application-level idempotency.</li>
+<li>Remember that <code>send()</code> calls, producer batches, network requests, and broker connections are different concepts.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

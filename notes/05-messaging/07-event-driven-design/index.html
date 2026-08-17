@@ -1,0 +1,2127 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal roadmap for becoming a stronger Java backend engineer">
+      
+      
+        <meta name="author" content="DJames">
+      
+      
+      
+        <link rel="prev" href="../06-delivery-semantics/">
+      
+      
+        <link rel="next" href="../avro/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Event-Driven Design - Backend Academy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#event-driven-design" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Backend Academy" class="md-header__button md-logo" aria-label="Backend Academy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Backend Academy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Event-Driven Design
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/djames1109/backend-academy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../01-modern-java/" class="md-tabs__link">
+          
+  
+  
+  Modern Java
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Messaging and Event-Driven Systems
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Backend Academy" class="md-nav__button md-logo" aria-label="Backend Academy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Backend Academy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/djames1109/backend-academy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modern Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modern Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-modern-java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-modern-java/01-records/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-modern-java/02-sealed-classes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sealed Classes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Messaging and Event-Driven Systems
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Messaging and Event-Driven Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-kafka-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-kafka-producer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Producer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-kafka-consumer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Consumer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-kafka-transaction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Transactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-consumer-groups-and-offsets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Consumer Groups and Offsets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-delivery-semantics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Delivery Semantics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event-Driven Design
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event-Driven Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-with-the-business-event" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start with the Business Event
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-notification-vs-event-carried-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Notification vs Event-Carried State
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topic-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topic Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#message-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message Keys
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partitioning-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Partitioning Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibility-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compatibility Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retry-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retry Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dead-letter-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dead Letter Topics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observability
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-and-ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security and Ownership
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Mistakes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#designing-topics-around-producer-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Designing topics around producer internals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-message-keys-randomly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing message keys randomly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publishing-events-without-clear-ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Publishing events without clear ownership
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#treating-the-dlt-as-the-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Treating the DLT as the solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignoring-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ignoring observability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forgetting-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forgetting idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-corner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Corner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interview Corner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-do-you-choose-a-kafka-message-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do you choose a Kafka message key?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-you-design-a-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do you design a topic?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-is-idempotency-important-in-event-driven-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why is idempotency important in event-driven systems?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-should-go-into-a-dead-letter-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What should go into a dead letter topic?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-difference-between-schema-compatibility-and-business-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the difference between schema compatibility and business compatibility?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules-of-thumb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules of Thumb
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avro
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Avro
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/01-avro-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avro Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/02-schema-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/03-avro-with-java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avro with Java and Spring Kafka
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-with-the-business-event" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start with the Business Event
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-notification-vs-event-carried-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Notification vs Event-Carried State
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topic-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topic Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#message-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message Keys
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partitioning-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Partitioning Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibility-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compatibility Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retry-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retry Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dead-letter-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dead Letter Topics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observability
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-and-ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security and Ownership
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Mistakes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#designing-topics-around-producer-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Designing topics around producer internals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-message-keys-randomly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing message keys randomly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publishing-events-without-clear-ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Publishing events without clear ownership
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#treating-the-dlt-as-the-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Treating the DLT as the solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignoring-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ignoring observability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forgetting-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forgetting idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-corner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Corner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interview Corner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-do-you-choose-a-kafka-message-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do you choose a Kafka message key?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-you-design-a-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do you design a topic?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-is-idempotency-important-in-event-driven-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why is idempotency important in event-driven systems?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-should-go-into-a-dead-letter-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What should go into a dead letter topic?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-difference-between-schema-compatibility-and-business-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the difference between schema compatibility and business compatibility?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules-of-thumb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules of Thumb
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="event-driven-design">Event-Driven Design</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Kafka concepts become useful when they are applied to system design.</p>
+<p>An event-driven design is not only about publishing messages.</p>
+<p>It requires decisions about:</p>
+<ul>
+<li>Topic boundaries</li>
+<li>Event names</li>
+<li>Message keys</li>
+<li>Partitioning</li>
+<li>Schemas</li>
+<li>Compatibility</li>
+<li>Retries</li>
+<li>Dead letter topics</li>
+<li>Idempotency</li>
+<li>Observability</li>
+</ul>
+<p>Each decision affects reliability, scalability, and how easily services can evolve.</p>
+<hr />
+<h2 id="start-with-the-business-event">Start with the Business Event</h2>
+<p>A good Kafka event represents something meaningful that happened.</p>
+<p>Examples:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>OrderCreated
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>PaymentCaptured
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>InventoryReserved
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>ShipmentDispatched
+</code></pre></div>
+<p>These are facts.</p>
+<p>They describe completed changes in the business.</p>
+<p>Avoid vague event names such as:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>OrderMessage
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>OrderData
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>OrderPayload
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>ProcessOrder
+</code></pre></div>
+<p>These names do not clearly communicate what happened.</p>
+<p>The event name should help consumers understand why the event exists.</p>
+<hr />
+<h2 id="event-notification-vs-event-carried-state">Event Notification vs Event-Carried State</h2>
+<p>Events can contain different levels of detail.</p>
+<p>An event notification only says that something happened.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORD-123"</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">}</span>
+</code></pre></div>
+<p>Consumers may need to call the producer service to fetch details.</p>
+<p>Event-carried state includes the useful state in the event itself.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORD-123"</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">"customerId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CUS-456"</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CREATED"</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">"totalAmount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100.50"</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">}</span>
+</code></pre></div>
+<p>This reduces direct service calls and allows consumers to work more independently.</p>
+<p>The trade-off is that the event contract becomes more important.</p>
+<p>More fields mean more schema evolution responsibility.</p>
+<hr />
+<h2 id="topic-design">Topic Design</h2>
+<p>A topic is a stream of related records.</p>
+<p>Topic design should be based on how events are produced, consumed, retained, and evolved.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>order-created
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>payment-captured
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>inventory-reserved
+</code></pre></div>
+<p>This design uses one topic per event type.</p>
+<p>Another approach is a broader event stream:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>order-events
+</code></pre></div>
+<p>containing:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>OrderCreated
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>OrderCancelled
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>OrderShipped
+</code></pre></div>
+<p>Both approaches can work.</p>
+<p>The decision depends on:</p>
+<ul>
+<li>Whether consumers usually need all event types or only one</li>
+<li>Whether events share retention requirements</li>
+<li>Whether events share schema evolution rules</li>
+<li>Whether ordering is needed across event types</li>
+<li>Whether the topic will become too broad to manage clearly</li>
+</ul>
+<p>Avoid putting unrelated events into the same topic just because they are produced by the same service.</p>
+<hr />
+<h2 id="message-keys">Message Keys</h2>
+<p>The message key influences partition selection.</p>
+<p>Records with the same key are normally routed to the same partition while the partition count is stable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>key = order-123
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>OrderCreated      -&gt; Partition 1
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>PaymentCaptured   -&gt; Partition 1
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>OrderShipped      -&gt; Partition 1
+</code></pre></div>
+<p>Use a key that matches the ordering requirement.</p>
+<p>If events for the same order must be processed in order, use <code>orderId</code>.</p>
+<p>If events for the same account must be processed in order, use <code>accountId</code>.</p>
+<p>The key should not be chosen randomly.</p>
+<p>It is part of the event design.</p>
+<hr />
+<h2 id="partitioning-strategy">Partitioning Strategy</h2>
+<p>Partitions provide parallelism.</p>
+<p>They also define the scope of Kafka's ordering guarantee.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>More partitions
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>        |
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>        +--&gt; more potential consumer parallelism
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>        +--&gt; more partition management overhead
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>        +--&gt; no global ordering across the topic
+</code></pre></div>
+<p>Choose the partition count based on expected throughput, consumer parallelism, and operational headroom.</p>
+<p>Do not rely on adding partitions casually if strict key-based ordering is important.</p>
+<p>Changing partition count can affect how keys are distributed.</p>
+<p>That can affect ordering assumptions for records with the same key across the change.</p>
+<hr />
+<h2 id="schema-design">Schema Design</h2>
+<p>Schemas are service contracts.</p>
+<p>For Avro-based topics, design schemas with evolution in mind.</p>
+<p>Rules of thumb:</p>
+<ul>
+<li>Use clear field names.</li>
+<li>Add fields with defaults.</li>
+<li>Avoid changing field meanings.</li>
+<li>Avoid casual field renames.</li>
+<li>Use nullable fields deliberately.</li>
+<li>Be careful with enums that may expand.</li>
+<li>Use logical types for timestamps, dates, UUIDs, and exact decimals.</li>
+</ul>
+<p>Event schemas should represent what consumers need to know, not every internal field in the producer's domain model.</p>
+<p>Internal models can change more frequently than public event contracts.</p>
+<hr />
+<h2 id="compatibility-strategy">Compatibility Strategy</h2>
+<p>Shared events should have a compatibility strategy.</p>
+<p>Common options include:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>BACKWARD
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>FORWARD
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>FULL
+</code></pre></div>
+<p>For shared business events, full compatibility is often a good goal because producers and consumers are deployed independently.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>New consumers can read old data.
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Old consumers can read new data.
+</code></pre></div>
+<p>Compatibility checks should happen before a schema reaches production.</p>
+<p>Schema Registry can enforce compatibility within a subject.</p>
+<p>However, schema compatibility does not replace business review.</p>
+<p>A schema can be technically compatible but still semantically confusing.</p>
+<hr />
+<h2 id="consumer-design">Consumer Design</h2>
+<p>Consumers should be designed for duplicate delivery.</p>
+<p>Common consumer responsibilities include:</p>
+<ul>
+<li>Deserialize the event.</li>
+<li>Validate business assumptions.</li>
+<li>Apply side effects safely.</li>
+<li>Store idempotency state.</li>
+<li>Commit offsets at the right time.</li>
+<li>Report failures clearly.</li>
+</ul>
+<p>A reliable consumer often follows this shape:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>receive event
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>        |
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>        v
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>check idempotency
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>        |
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>        v
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>apply business change
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>        |
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>        v
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>store processed marker
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>        |
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>        v
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>commit offset
+</code></pre></div>
+<p>The idempotency marker and business change should usually be stored atomically when possible.</p>
+<hr />
+<h2 id="retry-design">Retry Design</h2>
+<p>Not every failure should be retried in the same way.</p>
+<p>Retryable failures:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>temporary network issue
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>database timeout
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>dependent service temporarily unavailable
+</code></pre></div>
+<p>Non-retryable failures:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>invalid event structure
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>unknown required business reference
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>unsupported event version
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>permanent validation failure
+</code></pre></div>
+<p>Retries should use backoff.</p>
+<p>Immediate tight-loop retries can overload the same dependency that is already failing.</p>
+<p>Spring Kafka error handlers can classify exceptions and recover exhausted records to a dead letter topic.</p>
+<p>The retry strategy should match the failure type.</p>
+<hr />
+<h2 id="dead-letter-topics">Dead Letter Topics</h2>
+<p>A dead letter topic stores records that could not be processed successfully after the chosen recovery strategy.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>main topic
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    |
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    v
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>consumer
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    |
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    X repeated failure
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    |
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    v
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>dead letter topic
+</code></pre></div>
+<p>A DLT is not a trash can.</p>
+<p>It is an operational signal.</p>
+<p>DLT records should be observable and actionable.</p>
+<p>For each DLT, define:</p>
+<ul>
+<li>Who owns it</li>
+<li>What alerts on it</li>
+<li>How records are inspected</li>
+<li>Whether records can be replayed</li>
+<li>How fixed records are recovered</li>
+</ul>
+<p>Without an operational process, a DLT only hides failures.</p>
+<hr />
+<h2 id="idempotency">Idempotency</h2>
+<p>Idempotency prevents duplicate delivery from becoming duplicate business effects.</p>
+<p>Use an idempotency key that is stable for the logical event.</p>
+<p>Examples:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>eventId
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>orderId + eventType + version
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>paymentId
+</code></pre></div>
+<p>Avoid generating a new idempotency key on every retry.</p>
+<p>That makes duplicate detection impossible.</p>
+<p>Store idempotency state in the same transaction as the business side effect when possible.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>BEGIN TRANSACTION
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>apply business update
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>store processed event id
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>COMMIT
+</code></pre></div>
+<hr />
+<h2 id="observability">Observability</h2>
+<p>Kafka systems need operational visibility.</p>
+<p>Important signals include:</p>
+<ul>
+<li>Consumer lag</li>
+<li>Processing latency</li>
+<li>Retry counts</li>
+<li>DLT counts</li>
+<li>Deserialization failures</li>
+<li>Rebalance frequency</li>
+<li>Commit failures</li>
+<li>Producer send failures</li>
+<li>Schema compatibility failures</li>
+</ul>
+<p>Logs should include enough context to investigate a record.</p>
+<p>Useful fields:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>topic
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>partition
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>offset
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>key
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>event type
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>event id
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>consumer group
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>delivery attempt
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>exception type
+</code></pre></div>
+<p>Without this context, debugging Kafka failures becomes slow.</p>
+<hr />
+<h2 id="security-and-ownership">Security and Ownership</h2>
+<p>Event-driven systems need ownership boundaries.</p>
+<p>Each topic should have a clear owner.</p>
+<p>The owner is responsible for:</p>
+<ul>
+<li>Event meaning</li>
+<li>Schema evolution</li>
+<li>Compatibility policy</li>
+<li>Retention policy</li>
+<li>Access control</li>
+<li>Documentation</li>
+<li>DLT handling</li>
+</ul>
+<p>Consumers should not depend on undocumented fields or behavior.</p>
+<p>Producers should not change shared event contracts casually.</p>
+<hr />
+<h2 id="design-checklist">Design Checklist</h2>
+<p>Before introducing a new Kafka event, ask:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>What happened?
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>Who owns this event?
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>Who consumes it?
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>What is the message key?
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>What ordering is required?
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>What schema compatibility is required?
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>What is the retention policy?
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>Can consumers handle duplicates?
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>What failures are retryable?
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>Where do exhausted failures go?
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>How will this be monitored?
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>How will this event evolve?
+</code></pre></div>
+<p>These questions prevent many production problems.</p>
+<hr />
+<h2 id="common-mistakes">Common Mistakes</h2>
+<h3 id="designing-topics-around-producer-internals">Designing topics around producer internals</h3>
+<p>Topics should reflect useful event streams, not just internal service structure.</p>
+<h3 id="choosing-message-keys-randomly">Choosing message keys randomly</h3>
+<p>Keys affect partitioning and ordering.</p>
+<p>Choose keys based on processing requirements.</p>
+<h3 id="publishing-events-without-clear-ownership">Publishing events without clear ownership</h3>
+<p>Shared events need owners.</p>
+<p>Without ownership, schema changes and operational issues become unclear.</p>
+<h3 id="treating-the-dlt-as-the-solution">Treating the DLT as the solution</h3>
+<p>A DLT stores failures.</p>
+<p>It does not solve them unless there is a process for investigation and recovery.</p>
+<h3 id="ignoring-observability">Ignoring observability</h3>
+<p>Kafka failures often happen outside normal application call stacks.</p>
+<p>Logs and metrics must include topic, partition, offset, key, and exception context.</p>
+<h3 id="forgetting-idempotency">Forgetting idempotency</h3>
+<p>Retries, rebalances, and replay can all repeat records.</p>
+<p>Consumers should be designed for duplicate delivery.</p>
+<hr />
+<h2 id="interview-corner">Interview Corner</h2>
+<h3 id="how-do-you-choose-a-kafka-message-key">How do you choose a Kafka message key?</h3>
+<p>Choose a key based on ordering and partitioning requirements.</p>
+<p>If events for the same entity must be processed in order, use that entity's identifier.</p>
+<h3 id="how-do-you-design-a-topic">How do you design a topic?</h3>
+<p>Group related events that share consumption, retention, ordering, and evolution needs.</p>
+<p>Avoid mixing unrelated events just because the same service produces them.</p>
+<h3 id="why-is-idempotency-important-in-event-driven-systems">Why is idempotency important in event-driven systems?</h3>
+<p>Kafka consumers can see duplicate records due to retries, crashes, rebalances, or replay.</p>
+<p>Idempotency prevents duplicates from becoming repeated business side effects.</p>
+<h3 id="what-should-go-into-a-dead-letter-topic">What should go into a dead letter topic?</h3>
+<p>Records that cannot be processed after the configured retry and recovery strategy.</p>
+<p>DLT records should be monitored and have an operational recovery process.</p>
+<h3 id="what-is-the-difference-between-schema-compatibility-and-business-compatibility">What is the difference between schema compatibility and business compatibility?</h3>
+<p>Schema compatibility checks whether data can be read across schema versions.</p>
+<p>Business compatibility asks whether the event still means what consumers expect it to mean.</p>
+<hr />
+<h2 id="rules-of-thumb">Rules of Thumb</h2>
+<ul>
+<li>Name events after facts that happened.</li>
+<li>Choose message keys based on ordering requirements.</li>
+<li>Treat schemas as long-lived contracts.</li>
+<li>Keep topic ownership explicit.</li>
+<li>Use compatibility checks for shared schemas.</li>
+<li>Make consumers idempotent.</li>
+<li>Use retries for temporary failures.</li>
+<li>Use DLTs for exhausted or unrecoverable records.</li>
+<li>Monitor lag, retries, DLTs, and deserialization failures.</li>
+<li>Include topic, partition, offset, key, and event ID in logs.</li>
+<li>Design for replay before replay is needed.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,3354 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal roadmap for becoming a stronger Java backend engineer">
+      
+      
+        <meta name="author" content="DJames">
+      
+      
+      
+        <link rel="prev" href="../02-kafka-producer/">
+      
+      
+        <link rel="next" href="../04-kafka-transaction/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Kafka Consumer - Backend Academy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kafka-consumer" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Backend Academy" class="md-header__button md-logo" aria-label="Backend Academy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Backend Academy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kafka Consumer
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/djames1109/backend-academy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../01-modern-java/" class="md-tabs__link">
+          
+  
+  
+  Modern Java
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Messaging and Event-Driven Systems
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Backend Academy" class="md-nav__button md-logo" aria-label="Backend Academy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Backend Academy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/djames1109/backend-academy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modern Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modern Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-modern-java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-modern-java/01-records/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-modern-java/02-sealed-classes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sealed Classes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Messaging and Event-Driven Systems
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Messaging and Event-Driven Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-kafka-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-kafka-producer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Producer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Consumer
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Consumer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consuming-records-with-spring-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consuming Records with Spring Kafka
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafkalistener-and-kafkahandler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        @KafkaListener and @KafkaHandler
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-serialization-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Serialization Boundary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Serialization Boundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sharing-event-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sharing Event Classes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deserialization-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deserialization Failures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#errorhandlingdeserializer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ErrorHandlingDeserializer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ErrorHandlingDeserializer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-this-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why This Matters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Error Handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dead-letter-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dead Letter Topics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dead Letter Topics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dlt-does-not-mean-every-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DLT Does Not Mean Every Failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retryable-and-non-retryable-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retryable and Non-Retryable Failures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Retryable and Non-Retryable Failures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exception-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exception Classification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retry-backoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retry Backoff
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transactions-and-consumer-retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactions and Consumer Retries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Groups
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consumer Groups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#partition-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Partition Assignment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Parallelism
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-rebalancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Rebalancing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-consumer-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple Consumer Groups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idempotent-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotent Consumers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Idempotent Consumers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idempotency-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency Key
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-backed-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database-Backed Idempotency
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Database-Backed Idempotency">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-uniqueness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Uniqueness
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idempotency-and-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency and Transactions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-producer-idempotence-vs-consumer-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka Producer Idempotence vs Consumer Idempotency
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka Producer Idempotence vs Consumer Idempotency">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#producer-idempotence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Idempotence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consumer-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka Headers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failures-before-listener-invocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failures Before Listener Invocation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observing-retry-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observing Retry Failures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Mistakes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assuming-every-failure-reaches-the-listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming every failure reaches the listener
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrying-every-exception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrying every exception
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#treating-the-dlt-as-the-first-response-to-every-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Treating the DLT as the first response to every failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-more-consumers-than-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding more consumers than partitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-consumer-groups-prevent-duplicate-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming consumer groups prevent duplicate delivery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-only-exists-for-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using only exists() for idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generating-a-new-idempotency-id-during-every-retry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generating a new idempotency ID during every retry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confusing-producer-idempotence-with-consumer-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confusing producer idempotence with consumer idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-corner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Corner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interview Corner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-kafka-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Kafka consumer?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-consumer-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a consumer group?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-determines-maximum-consumer-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What determines maximum consumer parallelism?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-when-a-consumer-goes-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens when a consumer goes down?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-if-two-applications-use-different-consumer-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens if two applications use different consumer groups?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-dead-letter-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Dead Letter Topic?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-difference-between-a-retryable-and-non-retryable-exception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the difference between a retryable and non-retryable exception?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-use-errorhandlingdeserializer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why use ErrorHandlingDeserializer?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-an-idempotent-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is an idempotent consumer?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-checking-existsbymessageid-enough-for-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Is checking existsByMessageId() enough for idempotency?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-kafka-producer-idempotence-make-the-consumer-idempotent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Does Kafka producer idempotence make the consumer idempotent?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules-of-thumb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules of Thumb
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-kafka-transaction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Transactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-consumer-groups-and-offsets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Consumer Groups and Offsets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-delivery-semantics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Delivery Semantics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-event-driven-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event-Driven Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avro
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Avro
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/01-avro-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avro Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/02-schema-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/03-avro-with-java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avro with Java and Spring Kafka
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consuming-records-with-spring-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consuming Records with Spring Kafka
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafkalistener-and-kafkahandler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        @KafkaListener and @KafkaHandler
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-serialization-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Serialization Boundary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Serialization Boundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sharing-event-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sharing Event Classes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deserialization-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deserialization Failures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#errorhandlingdeserializer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ErrorHandlingDeserializer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ErrorHandlingDeserializer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-this-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why This Matters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Error Handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dead-letter-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dead Letter Topics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dead Letter Topics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dlt-does-not-mean-every-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DLT Does Not Mean Every Failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retryable-and-non-retryable-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retryable and Non-Retryable Failures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Retryable and Non-Retryable Failures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exception-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exception Classification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retry-backoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retry Backoff
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transactions-and-consumer-retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactions and Consumer Retries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Groups
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consumer Groups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#partition-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Partition Assignment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Parallelism
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-rebalancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Rebalancing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-consumer-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple Consumer Groups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idempotent-consumers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotent Consumers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Idempotent Consumers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idempotency-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency Key
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-backed-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database-Backed Idempotency
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Database-Backed Idempotency">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-uniqueness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Uniqueness
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idempotency-and-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency and Transactions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-producer-idempotence-vs-consumer-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka Producer Idempotence vs Consumer Idempotency
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka Producer Idempotence vs Consumer Idempotency">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#producer-idempotence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Idempotence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consumer-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka Headers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failures-before-listener-invocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failures Before Listener Invocation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observing-retry-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observing Retry Failures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Mistakes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assuming-every-failure-reaches-the-listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming every failure reaches the listener
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrying-every-exception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrying every exception
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#treating-the-dlt-as-the-first-response-to-every-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Treating the DLT as the first response to every failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-more-consumers-than-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding more consumers than partitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-consumer-groups-prevent-duplicate-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming consumer groups prevent duplicate delivery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-only-exists-for-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using only exists() for idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generating-a-new-idempotency-id-during-every-retry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generating a new idempotency ID during every retry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confusing-producer-idempotence-with-consumer-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confusing producer idempotence with consumer idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-corner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Corner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interview Corner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-kafka-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Kafka consumer?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-consumer-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a consumer group?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-determines-maximum-consumer-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What determines maximum consumer parallelism?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-when-a-consumer-goes-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens when a consumer goes down?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-if-two-applications-use-different-consumer-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens if two applications use different consumer groups?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-dead-letter-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Dead Letter Topic?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-the-difference-between-a-retryable-and-non-retryable-exception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the difference between a retryable and non-retryable exception?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-use-errorhandlingdeserializer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why use ErrorHandlingDeserializer?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-an-idempotent-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is an idempotent consumer?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-checking-existsbymessageid-enough-for-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Is checking existsByMessageId() enough for idempotency?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-kafka-producer-idempotence-make-the-consumer-idempotent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Does Kafka producer idempotence make the consumer idempotent?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules-of-thumb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules of Thumb
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="kafka-consumer">Kafka Consumer</h1>
+<h2 id="introduction">Introduction</h2>
+<p>A Kafka consumer is an application that reads and processes records from Kafka topics.</p>
+<p>While producers are responsible for reliably publishing records to Kafka, consumers are responsible for processing those records reliably.</p>
+<p>Consumer applications need to consider more than simply reading a message.</p>
+<p>They must also handle questions such as:</p>
+<ul>
+<li>How are records converted into application objects?</li>
+<li>What happens when a record cannot be deserialized?</li>
+<li>What happens when processing fails?</li>
+<li>Which failures should be retried?</li>
+<li>What happens after retries are exhausted?</li>
+<li>How can multiple consumers process records in parallel?</li>
+<li>How can duplicate processing be prevented?</li>
+</ul>
+<p>Spring Kafka provides abstractions for implementing these behaviors while still relying on Kafka's underlying consumer model.</p>
+<hr />
+<h2 id="consuming-records-with-spring-kafka">Consuming Records with Spring Kafka</h2>
+<p>Spring Kafka provides <code>@KafkaListener</code> for declaring methods or classes that consume records from Kafka topics.</p>
+<p>A simple listener can be declared directly on a method:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@KafkaListener</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="n">topics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"product-created"</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">groupId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"product-service"</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">consume</span><span class="p">(</span><span class="n">ProductCreatedEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="c1">// process event</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+</code></pre></div>
+<p>When a record becomes available, Spring Kafka:</p>
+<ol>
+<li>Polls the record from Kafka.</li>
+<li>Deserializes the record.</li>
+<li>Converts it into the expected Java type.</li>
+<li>Invokes the listener method.</li>
+</ol>
+<p>This allows application code to focus primarily on processing the event.</p>
+<hr />
+<h2 id="kafkalistener-and-kafkahandler">@KafkaListener and @KafkaHandler</h2>
+<p><code>@KafkaListener</code> can also be placed at the class level.</p>
+<p>Individual handler methods can then use <code>@KafkaHandler</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@KafkaListener</span><span class="p">(</span><span class="n">topics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"product-created"</span><span class="p">)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nd">@Component</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ProductEventConsumer</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nd">@KafkaHandler</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="n">ProductCreatedEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="c1">// process event</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">}</span>
+</code></pre></div>
+<p>This approach becomes useful when a listener handles multiple event types.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nd">@KafkaListener</span><span class="p">(</span><span class="n">topics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"product-events"</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nd">@Component</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ProductEventConsumer</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nd">@KafkaHandler</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="n">ProductCreatedEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="c1">// handle product creation</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="nd">@KafkaHandler</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="n">ProductUpdatedEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">        </span><span class="c1">// handle product update</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="p">}</span>
+</code></pre></div>
+<p>Spring selects the appropriate handler based on the converted payload type.</p>
+<p>If only one event type is being consumed, placing <code>@KafkaListener</code> directly on the method is often simpler.</p>
+<hr />
+<h2 id="consumer-configuration">Consumer Configuration</h2>
+<p>A consumer needs several properties to connect to Kafka and deserialize records.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">private</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">consumerConfig</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Map</span><span class="p">.</span><span class="na">of</span><span class="p">(</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">        </span><span class="n">ConsumerConfig</span><span class="p">.</span><span class="na">BOOTSTRAP_SERVERS_CONFIG</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span><span class="n">environment</span><span class="p">.</span><span class="na">getRequiredProperty</span><span class="p">(</span><span class="s">"spring.kafka.bootstrap-servers"</span><span class="p">),</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">        </span><span class="n">ConsumerConfig</span><span class="p">.</span><span class="na">KEY_DESERIALIZER_CLASS_CONFIG</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">        </span><span class="n">StringDeserializer</span><span class="p">.</span><span class="na">class</span><span class="p">,</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="n">ConsumerConfig</span><span class="p">.</span><span class="na">VALUE_DESERIALIZER_CLASS_CONFIG</span><span class="p">,</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">        </span><span class="n">ErrorHandlingDeserializer</span><span class="p">.</span><span class="na">class</span><span class="p">,</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">        </span><span class="n">ErrorHandlingDeserializer</span><span class="p">.</span><span class="na">VALUE_DESERIALIZER_CLASS</span><span class="p">,</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">        </span><span class="n">JacksonJsonDeserializer</span><span class="p">.</span><span class="na">class</span><span class="p">,</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">        </span><span class="n">ConsumerConfig</span><span class="p">.</span><span class="na">GROUP_ID_CONFIG</span><span class="p">,</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">        </span><span class="n">environment</span><span class="p">.</span><span class="na">getRequiredProperty</span><span class="p">(</span><span class="s">"spring.kafka.consumer.group-id"</span><span class="p">),</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">        </span><span class="n">ConsumerConfig</span><span class="p">.</span><span class="na">AUTO_OFFSET_RESET_CONFIG</span><span class="p">,</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">        </span><span class="n">environment</span><span class="p">.</span><span class="na">getRequiredProperty</span><span class="p">(</span><span class="s">"spring.kafka.consumer.auto-offset-reset"</span><span class="p">),</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">        </span><span class="n">JacksonJsonDeserializer</span><span class="p">.</span><span class="na">TRUSTED_PACKAGES</span><span class="p">,</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">        </span><span class="s">"*"</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">    </span><span class="p">);</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="p">}</span>
+</code></pre></div>
+<p>Important consumer properties include:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bootstrap.servers</code></td>
+<td>Kafka brokers used to establish the initial connection</td>
+</tr>
+<tr>
+<td><code>key.deserializer</code></td>
+<td>Converts the record key into a Java object</td>
+</tr>
+<tr>
+<td><code>value.deserializer</code></td>
+<td>Converts the record value into a Java object</td>
+</tr>
+<tr>
+<td><code>group.id</code></td>
+<td>Identifies the consumer group</td>
+</tr>
+<tr>
+<td><code>auto.offset.reset</code></td>
+<td>Determines where consumption begins when no committed offset exists</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="the-serialization-boundary">The Serialization Boundary</h2>
+<p>Kafka does not transport Java objects directly.</p>
+<p>A producer serializes an object into bytes before sending it to Kafka.</p>
+<p>The consumer must deserialize those bytes back into something the application understands.</p>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Producer
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>ProductCreatedEvent
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        |
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        v
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    Serializer
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>        |
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        v
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>      bytes
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        |
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>        v
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>      Kafka
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>        |
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>        v
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>      bytes
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>        |
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>        v
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>   Deserializer
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>        |
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>        v
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>ProductCreatedEvent
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>Consumer
+</code></pre></div>
+<p>This creates an important boundary between producers and consumers.</p>
+<hr />
+<h3 id="sharing-event-classes">Sharing Event Classes</h3>
+<p>One approach is to place event contracts in a shared module.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>core
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>└── ProductCreatedEvent
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>command
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>└── depends on core
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>sink
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>└── depends on core
+</code></pre></div>
+<p>Both producer and consumer then use the exact same Java class.</p>
+<p>This can be convenient in a sandbox, modular application, or tightly controlled environment.</p>
+<p>However, sharing Java classes between independently deployed microservices introduces compile-time coupling.</p>
+<p>An alternative is for producer and consumer applications to maintain their own models while agreeing on the serialized event contract.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Producer Model
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>      |
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>      v
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a> JSON / Avro / Protobuf
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>      |
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>      v
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>Consumer Model
+</code></pre></div>
+<p>The important contract is the data exchanged between the applications, not necessarily the Java class itself.</p>
+<hr />
+<h2 id="deserialization-failures">Deserialization Failures</h2>
+<p>Deserialization happens before the listener can process the event.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Kafka
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  |
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  v
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Deserialize
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  |
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  X failure
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  |
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>  v
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>@KafkaListener never invoked
+</code></pre></div>
+<p>This is different from an exception thrown by business logic inside the listener.</p>
+<p>A malformed record or incompatible event type can therefore fail before application processing begins.</p>
+<p>Without appropriate error handling, the consumer may repeatedly encounter the same record and continuously produce errors.</p>
+<hr />
+<h2 id="errorhandlingdeserializer">ErrorHandlingDeserializer</h2>
+<p>Spring Kafka provides <code>ErrorHandlingDeserializer</code> to make deserialization failures available to the listener container's error-handling infrastructure.</p>
+<p>Instead of configuring the JSON deserializer directly:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Kafka
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>   |
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>   v
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>JacksonJsonDeserializer
+</code></pre></div>
+<p>the actual deserializer can be wrapped:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Kafka
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>   |
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>   v
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>ErrorHandlingDeserializer
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>   |
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>   v
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>JacksonJsonDeserializer
+</code></pre></div>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">ConsumerConfig</span><span class="p">.</span><span class="na">VALUE_DESERIALIZER_CLASS_CONFIG</span><span class="p">,</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">ErrorHandlingDeserializer</span><span class="p">.</span><span class="na">class</span><span class="p">,</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="n">ErrorHandlingDeserializer</span><span class="p">.</span><span class="na">VALUE_DESERIALIZER_CLASS</span><span class="p">,</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">JacksonJsonDeserializer</span><span class="p">.</span><span class="na">class</span>
+</code></pre></div>
+<p><code>JacksonJsonDeserializer</code> is still responsible for converting the JSON into a Java object.</p>
+<p><code>ErrorHandlingDeserializer</code> acts as a wrapper that captures deserialization failures so Spring Kafka's error-handling infrastructure can process them appropriately.</p>
+<p>The JSON delegate still needs enough type information to build the target object. That may come from type headers, type mappings, a configured default value type, or a message-conversion setup.</p>
+<hr />
+<h3 id="why-this-matters">Why This Matters</h3>
+<p>Consider an invalid record:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">"productId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123"</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"not-a-number"</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">}</span>
+</code></pre></div>
+<p>If the consumer expects:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">BigDecimal</span><span class="w"> </span><span class="n">price</span>
+</code></pre></div>
+<p>deserialization may fail.</p>
+<p>The failure happens before:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nd">@KafkaHandler</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="n">ProductCreatedEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="p">...</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="p">}</span>
+</code></pre></div>
+<p>can be called.</p>
+<p>This is why logging or exception handling only inside the listener is not sufficient for every Kafka consumer failure.</p>
+<hr />
+<h2 id="consumer-error-handling">Consumer Error Handling</h2>
+<p>Spring Kafka provides <code>DefaultErrorHandler</code> for handling failures during consumer processing.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kd">var</span><span class="w"> </span><span class="n">errorHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DefaultErrorHandler</span><span class="p">(</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="k">new</span><span class="w"> </span><span class="n">DeadLetterPublishingRecoverer</span><span class="p">(</span><span class="n">kafkaTemplate</span><span class="p">),</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="k">new</span><span class="w"> </span><span class="n">FixedBackOff</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="p">);</span>
+</code></pre></div>
+<p>The error handler can determine whether the record should:</p>
+<ul>
+<li>Be retried</li>
+<li>Be recovered</li>
+<li>Be published to a Dead Letter Topic</li>
+</ul>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Kafka Record
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>     |
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>     v
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>Consumer
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>     |
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>     X failure
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>     |
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>     v
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>DefaultErrorHandler
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>     |
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>     ├── Retry
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>     |
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>     └── Recover
+</code></pre></div>
+<hr />
+<h2 id="dead-letter-topics">Dead Letter Topics</h2>
+<p>A <strong>Dead Letter Topic (DLT)</strong> provides a destination for records that cannot be successfully processed and that the configured error-handling strategy has decided to recover rather than continue retrying.</p>
+<p>Spring Kafka provides <code>DeadLetterPublishingRecoverer</code> for publishing failed records to a DLT.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">new</span><span class="w"> </span><span class="n">DeadLetterPublishingRecoverer</span><span class="p">(</span><span class="n">kafkaTemplate</span><span class="p">)</span>
+</code></pre></div>
+<p>With the default naming strategy, a failed record from:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>product-created
+</code></pre></div>
+<p>can be recovered to:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>product-created-dlt
+</code></pre></div>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>product-created
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>      |
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>      v
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>   Consumer
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>      |
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>      X processing failed
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>      |
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>      v
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>   retries
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>      |
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>      X still failing
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>      |
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>      v
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>product-created-dlt
+</code></pre></div>
+<p>A DLT prevents permanently failing records from continuously blocking normal processing.</p>
+<p>It also preserves failed records so they can be investigated or potentially reprocessed later.</p>
+<hr />
+<h3 id="dlt-does-not-mean-every-failure">DLT Does Not Mean Every Failure</h3>
+<p>A processing failure does not automatically mean that the record should immediately be published to a DLT.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>Processing failure
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>       |
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>       v
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>     retry
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>       |
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>       v
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>    success
+</code></pre></div>
+<p>No DLT is required.</p>
+<p>A DLT becomes relevant when the error-handling strategy determines that processing should no longer continue normally.</p>
+<p>This can happen because:</p>
+<ul>
+<li>The failure is considered non-retryable.</li>
+<li>The configured retries have been exhausted.</li>
+</ul>
+<hr />
+<h2 id="retryable-and-non-retryable-failures">Retryable and Non-Retryable Failures</h2>
+<p>Not every failure should be treated the same way.</p>
+<p>Some failures are temporary.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Database temporarily unavailable
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>External API returns 503
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>Network timeout
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>Temporary infrastructure failure
+</code></pre></div>
+<p>Trying the operation again later may succeed.</p>
+<p>These are <strong>retryable failures</strong>.</p>
+<p>Other failures are unlikely to change regardless of how many times the same operation is attempted.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>Invalid business input
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>Unsupported operation
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>Permanently invalid state
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>Malformed data
+</code></pre></div>
+<p>These are generally <strong>non-retryable failures</strong>.</p>
+<hr />
+<h3 id="exception-classification">Exception Classification</h3>
+<p>Applications can express these differences through exception types.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RetryableException</span><span class="p">(...);</span>
+</code></pre></div>
+<p>or:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NonRetryableException</span><span class="p">(...);</span>
+</code></pre></div>
+<p>The error handler can then classify them:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">errorHandler</span><span class="p">.</span><span class="na">addRetryableExceptions</span><span class="p">(</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">    </span><span class="n">RetryableException</span><span class="p">.</span><span class="na">class</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="p">);</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="n">errorHandler</span><span class="p">.</span><span class="na">addNotRetryableExceptions</span><span class="p">(</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="w">    </span><span class="n">NonRetryableException</span><span class="p">.</span><span class="na">class</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="p">);</span>
+</code></pre></div>
+<p>This gives the application control over which failures deserve another attempt.</p>
+<p>The important principle is:</p>
+<blockquote>
+<p>Retryability is often a business or application decision, not simply a Kafka decision.</p>
+</blockquote>
+<hr />
+<h2 id="retry-backoff">Retry Backoff</h2>
+<p>Retries should generally not happen continuously in a tight loop.</p>
+<p>Spring Kafka allows a backoff strategy to control the delay and number of retries.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">new</span><span class="w"> </span><span class="n">FixedBackOff</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p>This means:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Initial attempt
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>      |
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>      X
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>      |
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>   wait 5s
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>      |
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>Retry #1
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>      |
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>      X
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a>      |
+<a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a>   wait 5s
+<a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a>      |
+<a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a>Retry #2
+<a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a>      |
+<a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a>      X
+<a id="__codelineno-27-16" name="__codelineno-27-16" href="#__codelineno-27-16"></a>      |
+<a id="__codelineno-27-17" name="__codelineno-27-17" href="#__codelineno-27-17"></a>   wait 5s
+<a id="__codelineno-27-18" name="__codelineno-27-18" href="#__codelineno-27-18"></a>      |
+<a id="__codelineno-27-19" name="__codelineno-27-19" href="#__codelineno-27-19"></a>Retry #3
+</code></pre></div>
+<p>The value <code>3</code> represents three retry attempts after the initial delivery attempt.</p>
+<p>If processing still fails after the retries are exhausted, the configured recoverer can take over.</p>
+<p>With a <code>DeadLetterPublishingRecoverer</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>Initial attempt ❌
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>       |
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>Retry #1 ❌
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>       |
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>Retry #2 ❌
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>       |
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>Retry #3 ❌
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>       |
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>       v
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a>      DLT
+</code></pre></div>
+<hr />
+<h2 id="transactions-and-consumer-retries">Transactions and Consumer Retries</h2>
+<p>Database transactions and Kafka consumer retries solve different problems.</p>
+<p>A database transaction controls what happens to database changes when processing fails.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Kafka Event
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>    |
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>    v
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>@Transactional
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>    |
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>    ├── INSERT product      ✓
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>    ├── UPDATE inventory    X
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>    |
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>    v
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>ROLLBACK
+</code></pre></div>
+<p>The Kafka error handler determines what happens to the Kafka record afterward.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Processing failure
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>      |
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>      v
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>DefaultErrorHandler
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>      |
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>      ├── retry
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>      |
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>      └── DLT
+</code></pre></div>
+<p>These concerns should not be confused.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>@Transactional
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>    ↓
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>What happens to database changes?
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>DefaultErrorHandler
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>    ↓
+<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>What happens to the failed Kafka delivery?
+</code></pre></div>
+<p>More complex transaction coordination between Kafka and databases is covered separately.</p>
+<hr />
+<h2 id="consumer-groups">Consumer Groups</h2>
+<p>A <strong>consumer group</strong> allows multiple consumer instances to cooperate when processing a topic.</p>
+<p>Consumers belong to the same group when they use the same:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>group.id
+</code></pre></div>
+<p>Kafka distributes topic partitions among the consumers in that group.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>Topic: product-created
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>Partition 0
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>Partition 1
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>Partition 2
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>Consumer Group: product-service
+<a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>
+<a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a>Consumer 1 → Partition 0
+<a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a>Consumer 2 → Partition 1
+<a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a>Consumer 3 → Partition 2
+</code></pre></div>
+<p>This allows multiple partitions to be processed in parallel.</p>
+<hr />
+<h3 id="partition-assignment">Partition Assignment</h3>
+<p>Within a consumer group, a partition is assigned to one consumer at a time.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>3 partitions
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>2 consumers
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>Consumer 1 → Partition 0
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>             Partition 1
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>
+<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a>Consumer 2 → Partition 2
+</code></pre></div>
+<p>A consumer can own multiple partitions.</p>
+<p>However, the same partition is not simultaneously assigned to multiple consumers within the same consumer group.</p>
+<p>This preserves partition-level ordering while allowing parallel processing across partitions.</p>
+<hr />
+<h2 id="consumer-parallelism">Consumer Parallelism</h2>
+<p>The number of partitions places an upper bound on useful consumer parallelism within a consumer group.</p>
+<p>Consider:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>3 partitions
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>3 consumers
+</code></pre></div>
+<p>Kafka can assign:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>Consumer 1 → P0
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>Consumer 2 → P1
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>Consumer 3 → P2
+</code></pre></div>
+<p>All three consumers can perform useful work.</p>
+<p>Now consider:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>3 partitions
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>5 consumers
+</code></pre></div>
+<p>The assignment may look like:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>Consumer 1 → P0
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>Consumer 2 → P1
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>Consumer 3 → P2
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>Consumer 4 → idle
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>Consumer 5 → idle
+</code></pre></div>
+<p>The additional consumers do not increase processing parallelism because there are no additional partitions to assign.</p>
+<p>A useful rule is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>Maximum useful consumer parallelism
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>within a consumer group
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>≈ number of partitions
+</code></pre></div>
+<hr />
+<h2 id="consumer-rebalancing">Consumer Rebalancing</h2>
+<p>Consumer group membership can change over time.</p>
+<p>For example, a consumer may:</p>
+<ul>
+<li>Start</li>
+<li>Stop</li>
+<li>Crash</li>
+<li>Lose connectivity</li>
+<li>Be scaled up or down</li>
+</ul>
+<p>Kafka responds by redistributing partition ownership among the available consumers.</p>
+<p>This process is called <strong>rebalancing</strong>.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>BEFORE
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>Consumer 1 → P0
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a>Consumer 2 → P1
+<a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a>Consumer 3 → P2
+</code></pre></div>
+<p>If Consumer 2 becomes unavailable:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>Consumer 1 → P0
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>Consumer 2 → DOWN
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>Consumer 3 → P2
+</code></pre></div>
+<p>Kafka can rebalance the group:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>AFTER REBALANCE
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>Consumer 1 → P0 + P1
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a>Consumer 3 → P2
+</code></pre></div>
+<p>This allows the remaining consumers to continue processing the workload.</p>
+<hr />
+<h2 id="multiple-consumer-groups">Multiple Consumer Groups</h2>
+<p>Consumer groups are independent from one another.</p>
+<p>Consider two applications consuming the same topic:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>                product-created
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>                P0    P1    P2
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>                 |     |     |
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a>          ┌──────┴─────┴─────┴──────┐
+<a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a>          |                           |
+<a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a>          v                           v
+<a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a>
+<a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a>Group: inventory              Group: analytics
+<a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a>
+<a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a>Consumer A → P0               Consumer X → P0
+<a id="__codelineno-43-11" name="__codelineno-43-11" href="#__codelineno-43-11"></a>Consumer B → P1               Consumer Y → P1
+<a id="__codelineno-43-12" name="__codelineno-43-12" href="#__codelineno-43-12"></a>Consumer C → P2               Consumer Z → P2
+</code></pre></div>
+<p>Both groups can process the records independently.</p>
+<p>This creates an important distinction:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>Same consumer group
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>        ↓
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>Work is distributed between consumers.
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a>
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a>
+<a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a>Different consumer groups
+<a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a>        ↓
+<a id="__codelineno-44-8" name="__codelineno-44-8" href="#__codelineno-44-8"></a>Each group consumes the stream independently.
+</code></pre></div>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>OrderCreated
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>     |
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>     ├── inventory-service
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a>     |
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a>     ├── notification-service
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a>     |
+<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a>     └── analytics-service
+</code></pre></div>
+<p>Each service can use its own consumer group and independently process the same event.</p>
+<p>Multiple instances of the same service can then share a group ID to distribute that service's workload.</p>
+<hr />
+<h2 id="idempotent-consumers">Idempotent Consumers</h2>
+<p>Kafka consumers must be designed with duplicate delivery in mind.</p>
+<p>A record may be processed more than once because of failures, retries, or redelivery.</p>
+<p>An <strong>idempotent consumer</strong> ensures that processing the same logical message multiple times does not repeatedly produce the same business side effect.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>messageId = abc-123
+</code></pre></div>
+<p>First delivery:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>abc-123
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>   |
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>   v
+<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a>Not processed before
+<a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a>   |
+<a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a>   v
+<a id="__codelineno-47-7" name="__codelineno-47-7" href="#__codelineno-47-7"></a>Process business operation
+<a id="__codelineno-47-8" name="__codelineno-47-8" href="#__codelineno-47-8"></a>   |
+<a id="__codelineno-47-9" name="__codelineno-47-9" href="#__codelineno-47-9"></a>   v
+<a id="__codelineno-47-10" name="__codelineno-47-10" href="#__codelineno-47-10"></a>Store abc-123
+</code></pre></div>
+<p>Duplicate delivery:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>abc-123
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>   |
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>   v
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a>Already processed
+<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a>   |
+<a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a>   v
+<a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a>Skip
+</code></pre></div>
+<p>The consumer can therefore safely receive the same logical message multiple times.</p>
+<hr />
+<h3 id="idempotency-key">Idempotency Key</h3>
+<p>One approach is to assign every logical message a unique identifier.</p>
+<p>For example, a producer can include:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>messageId = 550e8400-e29b-41d4-a716-446655440000
+</code></pre></div>
+<p>as a Kafka header.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="n">producerRecord</span><span class="p">.</span><span class="na">headers</span><span class="p">().</span><span class="na">add</span><span class="p">(</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="w">    </span><span class="s">"messageId"</span><span class="p">,</span>
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="w">    </span><span class="n">messageId</span><span class="p">.</span><span class="na">getBytes</span><span class="p">()</span>
+<a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="p">);</span>
+</code></pre></div>
+<p>The consumer can then retrieve the header:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="nd">@Header</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"messageId"</span><span class="p">)</span>
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="n">String</span><span class="w"> </span><span class="n">messageId</span>
+</code></pre></div>
+<p>and use it when processing the event.</p>
+<p>The important requirement is that redelivery of the <strong>same logical message must retain the same idempotency identifier</strong>.</p>
+<p>Generating a new identifier for every retry or republication would prevent the consumer from recognizing the duplicate.</p>
+<hr />
+<h2 id="database-backed-idempotency">Database-Backed Idempotency</h2>
+<p>A consumer can store processed message identifiers in a database.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">repository</span><span class="p">.</span><span class="na">existsByMessageId</span><span class="p">(</span><span class="n">messageId</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="p">}</span>
+<a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a>
+<a id="__codelineno-52-5" name="__codelineno-52-5" href="#__codelineno-52-5"></a><span class="n">repository</span><span class="p">.</span><span class="na">save</span><span class="p">(...);</span>
+</code></pre></div>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>Kafka Event
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>    |
+<a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a>    v
+<a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a>messageId = abc-123
+<a id="__codelineno-53-5" name="__codelineno-53-5" href="#__codelineno-53-5"></a>    |
+<a id="__codelineno-53-6" name="__codelineno-53-6" href="#__codelineno-53-6"></a>    v
+<a id="__codelineno-53-7" name="__codelineno-53-7" href="#__codelineno-53-7"></a>Does abc-123 exist?
+<a id="__codelineno-53-8" name="__codelineno-53-8" href="#__codelineno-53-8"></a>    |
+<a id="__codelineno-53-9" name="__codelineno-53-9" href="#__codelineno-53-9"></a>    ├── YES → already processed → return
+<a id="__codelineno-53-10" name="__codelineno-53-10" href="#__codelineno-53-10"></a>    |
+<a id="__codelineno-53-11" name="__codelineno-53-11" href="#__codelineno-53-11"></a>    └── NO
+<a id="__codelineno-53-12" name="__codelineno-53-12" href="#__codelineno-53-12"></a>         |
+<a id="__codelineno-53-13" name="__codelineno-53-13" href="#__codelineno-53-13"></a>         v
+<a id="__codelineno-53-14" name="__codelineno-53-14" href="#__codelineno-53-14"></a>      process
+<a id="__codelineno-53-15" name="__codelineno-53-15" href="#__codelineno-53-15"></a>         |
+<a id="__codelineno-53-16" name="__codelineno-53-16" href="#__codelineno-53-16"></a>         v
+<a id="__codelineno-53-17" name="__codelineno-53-17" href="#__codelineno-53-17"></a>      persist
+</code></pre></div>
+<p>This provides application-level duplicate detection.</p>
+<hr />
+<h3 id="database-uniqueness">Database Uniqueness</h3>
+<p>An application-level existence check alone is not sufficient protection against concurrent processing.</p>
+<p>Consider:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>Consumer A                    Consumer B
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>exists(abc)? → false          exists(abc)? → false
+<a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a>
+<a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a>save abc                      save abc
+</code></pre></div>
+<p>Both consumers could observe that the identifier does not exist before either transaction commits.</p>
+<p>The database should therefore also enforce uniqueness on the idempotency identifier.</p>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="k">UNIQUE</span><span class="w"> </span><span class="p">(</span><span class="n">message_id</span><span class="p">)</span>
+</code></pre></div>
+<p>The database then provides the final protection against concurrent duplicate inserts.</p>
+<p>The application check remains useful for avoiding unnecessary processing and providing clearer application behavior.</p>
+<hr />
+<h2 id="idempotency-and-transactions">Idempotency and Transactions</h2>
+<p>The idempotency marker and the business operation should ideally participate in the same database transaction.</p>
+<p>Consider:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>Store messageId        ✓
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>Perform business work  X
+</code></pre></div>
+<p>If the idempotency marker were committed independently, the next delivery could incorrectly appear to have already been successfully processed.</p>
+<p>Instead:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>@Transactional
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>
+<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a>Check messageId
+<a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a>      |
+<a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a>Perform business operation
+<a id="__codelineno-57-6" name="__codelineno-57-6" href="#__codelineno-57-6"></a>      |
+<a id="__codelineno-57-7" name="__codelineno-57-7" href="#__codelineno-57-7"></a>Store idempotency state
+<a id="__codelineno-57-8" name="__codelineno-57-8" href="#__codelineno-57-8"></a>      |
+<a id="__codelineno-57-9" name="__codelineno-57-9" href="#__codelineno-57-9"></a>      X failure
+<a id="__codelineno-57-10" name="__codelineno-57-10" href="#__codelineno-57-10"></a>      |
+<a id="__codelineno-57-11" name="__codelineno-57-11" href="#__codelineno-57-11"></a>ROLLBACK EVERYTHING
+</code></pre></div>
+<p>The next delivery can then safely attempt the operation again.</p>
+<hr />
+<h2 id="kafka-producer-idempotence-vs-consumer-idempotency">Kafka Producer Idempotence vs Consumer Idempotency</h2>
+<p>These concepts solve different problems.</p>
+<h3 id="producer-idempotence">Producer Idempotence</h3>
+<p>Producer idempotence protects against duplicate records caused by Kafka Producer's internal retries.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>Application calls send() once
+<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a>
+<a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a>        |
+<a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a>        v
+<a id="__codelineno-58-5" name="__codelineno-58-5" href="#__codelineno-58-5"></a>
+<a id="__codelineno-58-6" name="__codelineno-58-6" href="#__codelineno-58-6"></a>Kafka Producer
+<a id="__codelineno-58-7" name="__codelineno-58-7" href="#__codelineno-58-7"></a>   |
+<a id="__codelineno-58-8" name="__codelineno-58-8" href="#__codelineno-58-8"></a>   ├── attempt
+<a id="__codelineno-58-9" name="__codelineno-58-9" href="#__codelineno-58-9"></a>   ├── retry
+<a id="__codelineno-58-10" name="__codelineno-58-10" href="#__codelineno-58-10"></a>   └── retry
+<a id="__codelineno-58-11" name="__codelineno-58-11" href="#__codelineno-58-11"></a>
+<a id="__codelineno-58-12" name="__codelineno-58-12" href="#__codelineno-58-12"></a>        |
+<a id="__codelineno-58-13" name="__codelineno-58-13" href="#__codelineno-58-13"></a>        v
+<a id="__codelineno-58-14" name="__codelineno-58-14" href="#__codelineno-58-14"></a>
+<a id="__codelineno-58-15" name="__codelineno-58-15" href="#__codelineno-58-15"></a>Avoid duplicate append caused by producer retry
+</code></pre></div>
+<h3 id="consumer-idempotency">Consumer Idempotency</h3>
+<p>Consumer idempotency protects business processing when the same logical record is delivered more than once.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>Kafka
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>   |
+<a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a>   ├── delivery #1
+<a id="__codelineno-59-4" name="__codelineno-59-4" href="#__codelineno-59-4"></a>   |
+<a id="__codelineno-59-5" name="__codelineno-59-5" href="#__codelineno-59-5"></a>   └── delivery #2
+<a id="__codelineno-59-6" name="__codelineno-59-6" href="#__codelineno-59-6"></a>
+<a id="__codelineno-59-7" name="__codelineno-59-7" href="#__codelineno-59-7"></a>        |
+<a id="__codelineno-59-8" name="__codelineno-59-8" href="#__codelineno-59-8"></a>        v
+<a id="__codelineno-59-9" name="__codelineno-59-9" href="#__codelineno-59-9"></a>
+<a id="__codelineno-59-10" name="__codelineno-59-10" href="#__codelineno-59-10"></a>Consumer recognizes same messageId
+<a id="__codelineno-59-11" name="__codelineno-59-11" href="#__codelineno-59-11"></a>        |
+<a id="__codelineno-59-12" name="__codelineno-59-12" href="#__codelineno-59-12"></a>        v
+<a id="__codelineno-59-13" name="__codelineno-59-13" href="#__codelineno-59-13"></a>Business effect occurs once
+</code></pre></div>
+<p>Kafka producer idempotence does not replace consumer idempotency.</p>
+<p>They operate at different stages of the messaging lifecycle.</p>
+<hr />
+<h2 id="kafka-headers">Kafka Headers</h2>
+<p>Consumers can access metadata associated with received Kafka records.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="nd">@KafkaHandler</span>
+<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">handleProductCreatedEvent</span><span class="p">(</span>
+<a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a><span class="w">    </span><span class="nd">@Payload</span><span class="w"> </span><span class="n">ProductCreatedEvent</span><span class="w"> </span><span class="n">event</span><span class="p">,</span>
+<a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a><span class="w">    </span><span class="nd">@Header</span><span class="p">(</span><span class="n">KafkaHeaders</span><span class="p">.</span><span class="na">RECEIVED_TOPIC</span><span class="p">)</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">topic</span><span class="p">,</span>
+<a id="__codelineno-60-5" name="__codelineno-60-5" href="#__codelineno-60-5"></a><span class="w">    </span><span class="nd">@Header</span><span class="p">(</span><span class="n">KafkaHeaders</span><span class="p">.</span><span class="na">RECEIVED_KEY</span><span class="p">)</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">key</span><span class="p">,</span>
+<a id="__codelineno-60-6" name="__codelineno-60-6" href="#__codelineno-60-6"></a><span class="w">    </span><span class="nd">@Header</span><span class="p">(</span><span class="s">"messageId"</span><span class="p">)</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">messageId</span>
+<a id="__codelineno-60-7" name="__codelineno-60-7" href="#__codelineno-60-7"></a><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-60-8" name="__codelineno-60-8" href="#__codelineno-60-8"></a><span class="w">    </span><span class="p">...</span>
+<a id="__codelineno-60-9" name="__codelineno-60-9" href="#__codelineno-60-9"></a><span class="p">}</span>
+</code></pre></div>
+<p><code>RECEIVED_TOPIC</code> and <code>RECEIVED_KEY</code> represent metadata from the consumed record.</p>
+<p>This distinction matters because Spring also defines headers used for outbound Kafka messages.</p>
+<p>Using the wrong header constant can cause argument resolution to fail before the listener method is invoked.</p>
+<hr />
+<h2 id="failures-before-listener-invocation">Failures Before Listener Invocation</h2>
+<p>Not every consumer failure occurs inside application business logic.</p>
+<p>The processing pipeline can be viewed as:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>Kafka Record
+<a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>     |
+<a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a>     v
+<a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a>Deserialization
+<a id="__codelineno-61-5" name="__codelineno-61-5" href="#__codelineno-61-5"></a>     |
+<a id="__codelineno-61-6" name="__codelineno-61-6" href="#__codelineno-61-6"></a>     v
+<a id="__codelineno-61-7" name="__codelineno-61-7" href="#__codelineno-61-7"></a>Message Conversion
+<a id="__codelineno-61-8" name="__codelineno-61-8" href="#__codelineno-61-8"></a>     |
+<a id="__codelineno-61-9" name="__codelineno-61-9" href="#__codelineno-61-9"></a>     v
+<a id="__codelineno-61-10" name="__codelineno-61-10" href="#__codelineno-61-10"></a>Header / Argument Resolution
+<a id="__codelineno-61-11" name="__codelineno-61-11" href="#__codelineno-61-11"></a>     |
+<a id="__codelineno-61-12" name="__codelineno-61-12" href="#__codelineno-61-12"></a>     v
+<a id="__codelineno-61-13" name="__codelineno-61-13" href="#__codelineno-61-13"></a>@KafkaHandler
+<a id="__codelineno-61-14" name="__codelineno-61-14" href="#__codelineno-61-14"></a>     |
+<a id="__codelineno-61-15" name="__codelineno-61-15" href="#__codelineno-61-15"></a>     v
+<a id="__codelineno-61-16" name="__codelineno-61-16" href="#__codelineno-61-16"></a>Business Logic
+</code></pre></div>
+<p>A failure at any earlier stage means the application may never reach the listener method.</p>
+<p>Examples include:</p>
+<ul>
+<li>Deserialization failures</li>
+<li>Missing required headers</li>
+<li>Message conversion failures</li>
+<li>Listener argument resolution failures</li>
+</ul>
+<p>This means:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(...);</span>
+</code></pre></div>
+<p>inside the listener cannot provide visibility into every consumer failure.</p>
+<p>Infrastructure-level failures should also be observed through the Kafka error-handling infrastructure.</p>
+<hr />
+<h2 id="observing-retry-failures">Observing Retry Failures</h2>
+<p>A retry listener can provide visibility into failed processing attempts.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="n">errorHandler</span><span class="p">.</span><span class="na">setRetryListeners</span><span class="p">(</span>
+<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a><span class="w">    </span><span class="p">(</span><span class="n">record</span><span class="p">,</span><span class="w"> </span><span class="n">exception</span><span class="p">,</span><span class="w"> </span><span class="n">deliveryAttempt</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(</span>
+<a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a><span class="w">            </span><span class="s">"Kafka processing failed. topic={}, partition={}, offset={}, attempt={}"</span><span class="p">,</span>
+<a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a><span class="w">            </span><span class="kd">record</span><span class="err">.</span><span class="nc">topic</span><span class="p">(),</span>
+<a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a><span class="w">            </span><span class="kd">record</span><span class="err">.</span><span class="nc">partition</span><span class="p">(),</span>
+<a id="__codelineno-63-7" name="__codelineno-63-7" href="#__codelineno-63-7"></a><span class="w">            </span><span class="kd">record</span><span class="err">.</span><span class="nc">offset</span><span class="p">(),</span>
+<a id="__codelineno-63-8" name="__codelineno-63-8" href="#__codelineno-63-8"></a><span class="w">            </span><span class="n">deliveryAttempt</span><span class="p">,</span>
+<a id="__codelineno-63-9" name="__codelineno-63-9" href="#__codelineno-63-9"></a><span class="w">            </span><span class="n">exception</span>
+<a id="__codelineno-63-10" name="__codelineno-63-10" href="#__codelineno-63-10"></a><span class="w">        </span><span class="p">);</span>
+<a id="__codelineno-63-11" name="__codelineno-63-11" href="#__codelineno-63-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-63-12" name="__codelineno-63-12" href="#__codelineno-63-12"></a><span class="p">);</span>
+</code></pre></div>
+<p>This is particularly useful for failures that occur before application business logic is reached.</p>
+<p>Useful information to log includes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>Topic
+<a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a>Partition
+<a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a>Offset
+<a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a>Delivery attempt
+<a id="__codelineno-64-5" name="__codelineno-64-5" href="#__codelineno-64-5"></a>Exception type
+<a id="__codelineno-64-6" name="__codelineno-64-6" href="#__codelineno-64-6"></a>Exception message
+<a id="__codelineno-64-7" name="__codelineno-64-7" href="#__codelineno-64-7"></a>Stack trace
+</code></pre></div>
+<p>Without sufficient observability, an infrastructure failure can otherwise appear only as repeated retries followed by a record being recovered to the DLT.</p>
+<hr />
+<h2 id="common-mistakes">Common Mistakes</h2>
+<h3 id="assuming-every-failure-reaches-the-listener">Assuming every failure reaches the listener</h3>
+<p>Deserialization, conversion, or header-resolution failures can occur before <code>@KafkaListener</code> or <code>@KafkaHandler</code> executes.</p>
+<p>Error handling must therefore exist outside the business listener as well.</p>
+<hr />
+<h3 id="retrying-every-exception">Retrying every exception</h3>
+<p>Some failures cannot succeed simply by trying again.</p>
+<p>Retrying permanently invalid messages wastes resources and delays other processing.</p>
+<p>Classify failures based on whether another attempt can reasonably change the result.</p>
+<hr />
+<h3 id="treating-the-dlt-as-the-first-response-to-every-failure">Treating the DLT as the first response to every failure</h3>
+<p>Temporary failures may recover after retrying.</p>
+<p>The DLT should be part of a deliberate recovery strategy rather than the automatic destination for every processing exception.</p>
+<hr />
+<h3 id="adding-more-consumers-than-partitions">Adding more consumers than partitions</h3>
+<p>Additional consumers within the same consumer group do not increase processing parallelism once every partition already has an assigned consumer.</p>
+<hr />
+<h3 id="assuming-consumer-groups-prevent-duplicate-delivery">Assuming consumer groups prevent duplicate delivery</h3>
+<p>Consumer groups distribute partition ownership.</p>
+<p>They do not provide business-level idempotency.</p>
+<p>Consumer applications should still be designed to safely handle duplicate processing.</p>
+<hr />
+<h3 id="using-only-exists-for-idempotency">Using only exists() for idempotency</h3>
+<p>Checking the database before inserting does not completely prevent concurrent duplicate processing.</p>
+<p>Use a database uniqueness constraint as the final enforcement mechanism.</p>
+<hr />
+<h3 id="generating-a-new-idempotency-id-during-every-retry">Generating a new idempotency ID during every retry</h3>
+<p>The identifier must represent the logical message.</p>
+<p>If every delivery receives a different identifier, duplicate detection cannot work.</p>
+<hr />
+<h3 id="confusing-producer-idempotence-with-consumer-idempotency">Confusing producer idempotence with consumer idempotency</h3>
+<p>Producer idempotence protects Kafka's publishing process.</p>
+<p>Consumer idempotency protects application business processing.</p>
+<p>Both may be needed in the same system.</p>
+<hr />
+<h2 id="interview-corner">Interview Corner</h2>
+<h3 id="what-is-a-kafka-consumer">What is a Kafka consumer?</h3>
+<p>A Kafka consumer reads records from Kafka topics and processes them.</p>
+<p>Consumers typically participate in consumer groups, allowing Kafka to distribute partitions across multiple consumer instances.</p>
+<hr />
+<h3 id="what-is-a-consumer-group">What is a consumer group?</h3>
+<p>A consumer group is a collection of consumers that cooperate to process topic partitions.</p>
+<p>Within a group, each partition is assigned to one consumer at a time.</p>
+<p>This allows processing to be distributed across multiple consumer instances.</p>
+<hr />
+<h3 id="what-determines-maximum-consumer-parallelism">What determines maximum consumer parallelism?</h3>
+<p>The number of partitions.</p>
+<p>If a topic has three partitions, at most three consumers within a consumer group can actively consume those partitions at the same time.</p>
+<p>Additional consumers remain idle until partition ownership becomes available.</p>
+<hr />
+<h3 id="what-happens-when-a-consumer-goes-down">What happens when a consumer goes down?</h3>
+<p>Kafka detects changes in consumer group membership and can rebalance partition assignments among the remaining consumers.</p>
+<p>This allows processing to continue without the failed consumer.</p>
+<hr />
+<h3 id="what-happens-if-two-applications-use-different-consumer-groups">What happens if two applications use different consumer groups?</h3>
+<p>Each consumer group maintains independent consumption of the topic.</p>
+<p>This allows multiple applications to process the same stream of records for different purposes.</p>
+<hr />
+<h3 id="what-is-a-dead-letter-topic">What is a Dead Letter Topic?</h3>
+<p>A Dead Letter Topic stores records that could not be successfully processed and that the configured recovery strategy has decided not to continue processing normally.</p>
+<p>This commonly happens when a failure is non-retryable or when retry attempts have been exhausted.</p>
+<hr />
+<h3 id="what-is-the-difference-between-a-retryable-and-non-retryable-exception">What is the difference between a retryable and non-retryable exception?</h3>
+<p>A retryable exception represents a failure that may succeed on a later attempt, such as temporary service unavailability.</p>
+<p>A non-retryable exception represents a failure where repeating the same operation is unlikely to change the result.</p>
+<hr />
+<h3 id="why-use-errorhandlingdeserializer">Why use ErrorHandlingDeserializer?</h3>
+<p>Deserialization occurs before listener business logic.</p>
+<p><code>ErrorHandlingDeserializer</code> allows deserialization failures to participate in Spring Kafka's error-handling infrastructure rather than repeatedly failing outside the normal listener error flow.</p>
+<hr />
+<h3 id="what-is-an-idempotent-consumer">What is an idempotent consumer?</h3>
+<p>An idempotent consumer can safely process the same logical message multiple times without repeatedly applying its business side effect.</p>
+<p>A common implementation stores a unique message identifier and skips messages that have already been successfully processed.</p>
+<hr />
+<h3 id="is-checking-existsbymessageid-enough-for-idempotency">Is checking existsByMessageId() enough for idempotency?</h3>
+<p>Not by itself.</p>
+<p>Concurrent processing can allow two transactions to observe that the identifier does not exist.</p>
+<p>A database uniqueness constraint should also enforce the idempotency key.</p>
+<hr />
+<h3 id="does-kafka-producer-idempotence-make-the-consumer-idempotent">Does Kafka producer idempotence make the consumer idempotent?</h3>
+<p>No.</p>
+<p>Producer idempotence prevents duplicate records caused by producer retries.</p>
+<p>Consumer idempotency prevents duplicate business effects when records are delivered or processed multiple times.</p>
+<p>They solve different problems.</p>
+<hr />
+<h2 id="rules-of-thumb">Rules of Thumb</h2>
+<ul>
+<li>Treat duplicate delivery as something consumers must be prepared to handle.</li>
+<li>Use consumer groups to scale processing across partitions.</li>
+<li>Do not create more consumer instances solely for parallelism than the available partition count can utilize.</li>
+<li>Expect consumer group membership changes to cause partition reassignment.</li>
+<li>Distinguish deserialization failures from business-processing failures.</li>
+<li>Use <code>ErrorHandlingDeserializer</code> when deserialization failures need to participate in Spring Kafka's error-handling flow.</li>
+<li>Retry failures only when another attempt has a reasonable chance of succeeding.</li>
+<li>Use backoff rather than immediately retrying failures in a tight loop.</li>
+<li>Use a DLT as part of a deliberate failure-recovery strategy.</li>
+<li>Make business processing idempotent when duplicate delivery is possible.</li>
+<li>Enforce idempotency identifiers with database constraints, not only application checks.</li>
+<li>Keep the idempotency marker and associated database changes atomic where possible.</li>
+<li>Add observability around retry and recovery behavior so infrastructure failures are visible even when the listener is never invoked.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

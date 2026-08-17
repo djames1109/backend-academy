@@ -1,0 +1,2991 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal roadmap for becoming a stronger Java backend engineer">
+      
+      
+        <meta name="author" content="DJames">
+      
+      
+      
+        <link rel="prev" href="../03-kafka-consumer/">
+      
+      
+        <link rel="next" href="../05-consumer-groups-and-offsets/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Kafka Transactions - Backend Academy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kafka-transactions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Backend Academy" class="md-header__button md-logo" aria-label="Backend Academy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Backend Academy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kafka Transactions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/djames1109/backend-academy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../01-modern-java/" class="md-tabs__link">
+          
+  
+  
+  Modern Java
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Messaging and Event-Driven Systems
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Backend Academy" class="md-nav__button md-logo" aria-label="Backend Academy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Backend Academy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/djames1109/backend-academy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modern Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Modern Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-modern-java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-modern-java/01-records/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01-modern-java/02-sealed-classes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sealed Classes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Messaging and Event-Driven Systems
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Messaging and Event-Driven Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-kafka-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-kafka-producer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Producer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-kafka-consumer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Consumer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Transactions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Transactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-only-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka-Only Transactions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transactional-producers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactional Producers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transactional-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactional ID
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaction-id-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transaction-id-prefix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-fencing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Fencing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consuming-transactional-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consuming Transactional Records
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consuming Transactional Records">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#read_uncommitted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_uncommitted
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read_committed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_committed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spring-transaction-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring Transaction Management
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaction-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transaction Managers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-transaction-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple Transaction Managers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jpatransactionmanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JpaTransactionManager
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafkatransactionmanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KafkaTransactionManager
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaction-managers-manage-their-own-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transaction Managers Manage Their Own Resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-and-kafka-in-the-same-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database and Kafka in the Same Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-transaction-synchronization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka Transaction Synchronization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-kafka-can-synchronize-with-jpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Kafka Can Synchronize with JPA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#different-transaction-managers-do-not-automatically-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Different Transaction Managers Do Not Automatically Join
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#same-transaction-manager-vs-different-transaction-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Same Transaction Manager vs Different Transaction Managers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-kafka-commit-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database + Kafka Commit Order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-second-commit-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Second-Commit Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-is-not-one-global-transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why It Is Not One Global Transaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idempotency-and-commit-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency and Commit Failures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transactions-do-not-replace-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactions Do Not Replace Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transactions-and-consumer-retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactions and Consumer Retries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Mistakes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assuming-transactional-means-database-transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming @Transactional means database transaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-kafkatransactionmanager-manages-jpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming KafkaTransactionManager manages JPA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-jpatransactionmanager-manages-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming JpaTransactionManager manages Kafka
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-all-transaction-managers-automatically-synchronize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming all transaction managers automatically synchronize
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confusing-transactionalid-with-a-business-transaction-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confusing transactional.id with a business transaction ID
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forgetting-read_committed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forgetting read_committed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-db-kafka-is-one-distributed-transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming DB + Kafka is one distributed transaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-transactions-eliminate-duplicate-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming transactions eliminate duplicate processing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-corner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Corner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interview Corner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-problem-do-kafka-transactions-solve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What problem do Kafka transactions solve?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-kafkas-transactionalid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is Kafka's transactional.id?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-transaction-id-prefix-in-spring-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is transaction-id-prefix in Spring Kafka?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-does-isolationlevelread_committed-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What does isolation.level=read_committed do?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-kafkatransactionmanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is KafkaTransactionManager?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-jpatransactionmanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is JpaTransactionManager?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-jpatransactionmanager-manage-kafka-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Does JpaTransactionManager manage Kafka transactions?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-kafkatransactionmanager-manage-database-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Does KafkaTransactionManager manage database transactions?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-two-methods-use-different-transaction-managers-do-they-automatically-share-one-transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        If two methods use different transaction managers, do they automatically share one transaction?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#are-synchronized-kafka-and-database-transactions-fully-atomic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Are synchronized Kafka and database transactions fully atomic?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules-of-thumb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules of Thumb
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-consumer-groups-and-offsets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Consumer Groups and Offsets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-delivery-semantics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Delivery Semantics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-event-driven-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Event-Driven Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avro
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Avro
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/01-avro-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avro Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/02-schema-registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../avro/03-avro-with-java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avro with Java and Spring Kafka
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-only-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka-Only Transactions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transactional-producers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactional Producers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transactional-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactional ID
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaction-id-prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transaction-id-prefix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#producer-fencing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Producer Fencing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consuming-transactional-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consuming Transactional Records
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consuming Transactional Records">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#read_uncommitted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_uncommitted
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read_committed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_committed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spring-transaction-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring Transaction Management
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaction-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transaction Managers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiple-transaction-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple Transaction Managers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jpatransactionmanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JpaTransactionManager
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafkatransactionmanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KafkaTransactionManager
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaction-managers-manage-their-own-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transaction Managers Manage Their Own Resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-and-kafka-in-the-same-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database and Kafka in the Same Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-transaction-synchronization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka Transaction Synchronization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-kafka-can-synchronize-with-jpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Kafka Can Synchronize with JPA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#different-transaction-managers-do-not-automatically-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Different Transaction Managers Do Not Automatically Join
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#same-transaction-manager-vs-different-transaction-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Same Transaction Manager vs Different Transaction Managers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-kafka-commit-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database + Kafka Commit Order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-second-commit-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Second-Commit Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-is-not-one-global-transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why It Is Not One Global Transaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idempotency-and-commit-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency and Commit Failures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transactions-do-not-replace-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactions Do Not Replace Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transactions-and-consumer-retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transactions and Consumer Retries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Mistakes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assuming-transactional-means-database-transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming @Transactional means database transaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-kafkatransactionmanager-manages-jpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming KafkaTransactionManager manages JPA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-jpatransactionmanager-manages-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming JpaTransactionManager manages Kafka
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-all-transaction-managers-automatically-synchronize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming all transaction managers automatically synchronize
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confusing-transactionalid-with-a-business-transaction-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confusing transactional.id with a business transaction ID
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forgetting-read_committed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forgetting read_committed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-db-kafka-is-one-distributed-transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming DB + Kafka is one distributed transaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assuming-transactions-eliminate-duplicate-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assuming transactions eliminate duplicate processing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-corner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Corner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interview Corner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-problem-do-kafka-transactions-solve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What problem do Kafka transactions solve?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-kafkas-transactionalid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is Kafka's transactional.id?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-transaction-id-prefix-in-spring-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is transaction-id-prefix in Spring Kafka?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-does-isolationlevelread_committed-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What does isolation.level=read_committed do?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-kafkatransactionmanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is KafkaTransactionManager?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-jpatransactionmanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is JpaTransactionManager?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-jpatransactionmanager-manage-kafka-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Does JpaTransactionManager manage Kafka transactions?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-kafkatransactionmanager-manage-database-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Does KafkaTransactionManager manage database transactions?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-two-methods-use-different-transaction-managers-do-they-automatically-share-one-transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        If two methods use different transaction managers, do they automatically share one transaction?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#are-synchronized-kafka-and-database-transactions-fully-atomic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Are synchronized Kafka and database transactions fully atomic?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules-of-thumb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules of Thumb
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="kafka-transactions">Kafka Transactions</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Kafka transactions allow multiple Kafka operations to be treated as a single atomic unit.</p>
+<p>Consider a service that consumes a money transfer event and publishes two new events:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>transfer-topic
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>      |
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>      v
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Transfer Service
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>      |
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>      ├── withdraw-topic
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>      |
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>      └── deposit-topic
+</code></pre></div>
+<p>Publishing only one of these events could leave the system in an inconsistent state.</p>
+<p>The desired behavior is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>withdraw published ✅
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>deposit published  ✅
+</code></pre></div>
+<p>or:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>withdraw published ❌
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>deposit published  ❌
+</code></pre></div>
+<p>but never:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>withdraw published ✅
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>deposit published  ❌
+</code></pre></div>
+<p>Kafka transactions provide atomicity across Kafka operations performed within the same transaction.</p>
+<p>Transactions become more complicated when an operation also modifies another transactional resource such as a relational database.</p>
+<p>Understanding that distinction is essential when designing transactional Kafka applications.</p>
+<hr />
+<h2 id="kafka-only-transactions">Kafka-Only Transactions</h2>
+<p>Consider a method that publishes two records:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@Transactional</span><span class="p">(</span><span class="s">"kafkaTransactionManager"</span><span class="p">)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">processTransfer</span><span class="p">(</span><span class="n">TransferEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">        </span><span class="s">"withdraw-topic"</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">        </span><span class="n">createWithdrawal</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="p">);</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="s">"deposit-topic"</span><span class="p">,</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">        </span><span class="n">createDeposit</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="p">);</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="p">}</span>
+</code></pre></div>
+<p>Both sends participate in the same Kafka transaction.</p>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>BEGIN KAFKA TRANSACTION
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    publish withdrawal
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    publish deposit
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>COMMIT KAFKA TRANSACTION
+</code></pre></div>
+<p>If processing succeeds:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>withdraw-topic    ✅
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>deposit-topic     ✅
+</code></pre></div>
+<p>If an exception causes the transaction to abort:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>withdraw-topic    ❌
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>deposit-topic     ❌
+</code></pre></div>
+<p>The two calls to <code>send()</code> are not independently committed Kafka transactions.</p>
+<p>They are writes participating in one Kafka transaction.</p>
+<hr />
+<h2 id="transactional-producers">Transactional Producers</h2>
+<p>Normal Kafka producers can publish records without participating in transactions.</p>
+<p>To use Kafka transactions, the producer must be configured as a transactional producer.</p>
+<p>Spring Kafka manages transactional producers through <code>DefaultKafkaProducerFactory</code>.</p>
+<p>In Spring Boot, this can be enabled by configuring a transaction ID prefix.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">      </span><span class="nt">transaction-id-prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transfer-service-</span>
+</code></pre></div>
+<p>This allows Spring Kafka to create transactional producers.</p>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>transaction-id-prefix
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>        |
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>        v
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>DefaultKafkaProducerFactory
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>        |
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>        v
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>Transactional Kafka Producers
+</code></pre></div>
+<hr />
+<h2 id="transactional-id">Transactional ID</h2>
+<p>A transactional Kafka producer is configured with a <code>transactional.id</code>.</p>
+<p>It is important not to confuse this with a business transaction identifier.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>transferId = "TRANSFER-123"
+</code></pre></div>
+<p>might identify a business operation.</p>
+<p>A Kafka transactional ID instead identifies a <strong>transactional producer</strong>.</p>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Transactional Producer
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>transactional.id =
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>transfer-service-0
+</code></pre></div>
+<p>That producer can execute many Kafka transactions during its lifetime:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Producer: transfer-service-0
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>Transaction A
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    BEGIN
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    send
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    send
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    COMMIT
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>Transaction B
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>    BEGIN
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>    send
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>    send
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>    COMMIT
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>Transaction C
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>    BEGIN
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>    send
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>    ABORT
+</code></pre></div>
+<p>The <code>transactional.id</code> identifies the producer across those transactions.</p>
+<p>It does not identify Transaction A, B, or C individually.</p>
+<hr />
+<h2 id="transaction-id-prefix">transaction-id-prefix</h2>
+<p>Spring manages multiple transactional producer instances internally.</p>
+<p>Rather than manually assigning every producer a transactional ID, an application can provide a prefix:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">spring</span><span class="p">:</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">kafka</span><span class="p">:</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">producer</span><span class="p">:</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">      </span><span class="nt">transaction-id-prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transfer-service-</span>
+</code></pre></div>
+<p>Spring can use this prefix when creating transactional producer identities.</p>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>transfer-service-0
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>transfer-service-1
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>transfer-service-2
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>...
+</code></pre></div>
+<p>When multiple application instances are running simultaneously, their transactional producer identities must remain unique.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Instance A
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>transfer-service-instance-a-0
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>Instance B
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>transfer-service-instance-b-0
+</code></pre></div>
+<p>Reusing the same transactional producer identity across active instances can result in Kafka fencing an older producer.</p>
+<hr />
+<h2 id="producer-fencing">Producer Fencing</h2>
+<p>Kafka uses transactional producer identities to protect against stale producer instances.</p>
+<p>Imagine an application instance becomes temporarily disconnected:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Producer A
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>transactional.id = transfer-service-1
+</code></pre></div>
+<p>Another instance starts using the same transactional identity.</p>
+<p>Kafka must prevent the old producer from later reconnecting and continuing to write as if it were still the valid producer.</p>
+<p>The newer producer can therefore fence the older producer.</p>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Producer A
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>transactional.id = transfer-service-1
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>        |
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>        X fenced
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>Producer B
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>transactional.id = transfer-service-1
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>        |
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>        v
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>current producer
+</code></pre></div>
+<p>This prevents multiple producer instances from independently operating under the same transactional identity.</p>
+<hr />
+<h2 id="consuming-transactional-records">Consuming Transactional Records</h2>
+<p>Kafka stores records involved in transactions in its log before the transaction necessarily commits.</p>
+<p>This creates an important consumer-side question:</p>
+<blockquote>
+<p>Should consumers be allowed to see records from transactions that eventually abort?</p>
+</blockquote>
+<p>Kafka provides the consumer property:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="na">isolation.level</span>
+</code></pre></div>
+<p>Two important values are:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>read_uncommitted
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>read_committed
+</code></pre></div>
+<hr />
+<h3 id="read_uncommitted">read_uncommitted</h3>
+<p>With:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="na">isolation.level</span><span class="o">=</span><span class="s">read_uncommitted</span>
+</code></pre></div>
+<p>a consumer may read transactional records even if the transaction later aborts.</p>
+<p>Consider:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>BEGIN TRANSACTION
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>publish withdrawal   ✅ written
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>publish deposit      ❌ failure
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>ABORT TRANSACTION
+</code></pre></div>
+<p>The withdrawal record physically reached the Kafka log.</p>
+<p>A <code>read_uncommitted</code> consumer may therefore observe it even though the overall transaction was aborted.</p>
+<hr />
+<h3 id="read_committed">read_committed</h3>
+<p>Transactional consumers commonly use:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="na">isolation.level</span><span class="o">=</span><span class="s">read_committed</span>
+</code></pre></div>
+<p>This means:</p>
+<blockquote>
+<p>Only expose records from successfully committed transactions.</p>
+</blockquote>
+<p>Using the previous example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>BEGIN
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>withdrawal written
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>deposit fails
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>ABORT
+</code></pre></div>
+<p>a <code>read_committed</code> consumer will not return the withdrawal record as part of normal consumption.</p>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>Kafka Log
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>Record A ── committed transaction ──&gt; visible
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>Record B ── aborted transaction ────&gt; hidden
+</code></pre></div>
+<p>This completes the atomicity story from the consumer's perspective.</p>
+<hr />
+<h2 id="spring-transaction-management">Spring Transaction Management</h2>
+<p><code>@Transactional</code> is not specific to databases.</p>
+<p>It is part of Spring's transaction abstraction.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="nd">@Transactional</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">process</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">    </span><span class="p">...</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="p">}</span>
+</code></pre></div>
+<p>conceptually means:</p>
+<blockquote>
+<p>Execute this method within a transaction managed by a Spring transaction manager.</p>
+</blockquote>
+<p>Spring defines a transaction-management abstraction implemented by different transaction managers.</p>
+<p>Examples include:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>JpaTransactionManager
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>KafkaTransactionManager
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>DataSourceTransactionManager
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>JmsTransactionManager
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>JtaTransactionManager
+</code></pre></div>
+<p>Each transaction manager understands how to manage transactions for a particular type of resource.</p>
+<hr />
+<h2 id="transaction-managers">Transaction Managers</h2>
+<p>A useful mental model is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>                  Spring Transaction Infrastructure
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>                             |
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>                             v
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>                  PlatformTransactionManager
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>                             |
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>          ┌──────────────────┼──────────────────┐
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>          |                  |                  |
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>          v                  v                  v
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>JpaTransactionManager  KafkaTransactionManager  ...
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a>          |                  |
+<a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a>          v                  v
+<a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a>      Database             Kafka
+</code></pre></div>
+<p>Spring provides the transaction abstraction and lifecycle infrastructure.</p>
+<p>The transaction manager performs the actual resource-specific work.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>Spring
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>   |
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>   | begin()
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>   v
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>JpaTransactionManager
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>   |
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>   v
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>BEGIN DATABASE TRANSACTION
+</code></pre></div>
+<p>or:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Spring
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>   |
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>   | begin()
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>   v
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>KafkaTransactionManager
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>   |
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>   v
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>BEGIN KAFKA TRANSACTION
+</code></pre></div>
+<hr />
+<h2 id="multiple-transaction-managers">Multiple Transaction Managers</h2>
+<p>An application may contain more than one transaction manager.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nd">@Bean</span><span class="p">(</span><span class="s">"transactionManager"</span><span class="p">)</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="n">JpaTransactionManager</span><span class="w"> </span><span class="nf">transactionManager</span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">    </span><span class="p">...</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="p">}</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="nd">@Bean</span><span class="p">(</span><span class="s">"kafkaTransactionManager"</span><span class="p">)</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="n">KafkaTransactionManager</span><span class="o">&lt;?</span><span class="p">,</span><span class="w"> </span><span class="o">?&gt;</span><span class="w"> </span><span class="n">kafkaTransactionManager</span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="w">    </span><span class="p">...</span>
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="p">}</span>
+</code></pre></div>
+<p>Now the application has:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>transactionManager
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>        |
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>        v
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>JpaTransactionManager
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>kafkaTransactionManager
+<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>        |
+<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>        v
+<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a>KafkaTransactionManager
+</code></pre></div>
+<p>When multiple transaction managers exist, the application may explicitly select one:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="nd">@Transactional</span><span class="p">(</span><span class="s">"transactionManager"</span><span class="p">)</span>
+</code></pre></div>
+<p>or:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="nd">@Transactional</span><span class="p">(</span><span class="s">"kafkaTransactionManager"</span><span class="p">)</span>
+</code></pre></div>
+<p>The selected transaction manager defines the primary transaction boundary for that method.</p>
+<hr />
+<h2 id="jpatransactionmanager">JpaTransactionManager</h2>
+<p><code>JpaTransactionManager</code> manages database transactions through JPA.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nd">@Transactional</span><span class="p">(</span><span class="s">"transactionManager"</span><span class="p">)</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">createProduct</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">    </span><span class="n">repository</span><span class="p">.</span><span class="na">save</span><span class="p">(...);</span>
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="w">    </span><span class="n">repository</span><span class="p">.</span><span class="na">update</span><span class="p">(...);</span>
+<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="p">}</span>
+</code></pre></div>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>@Transactional
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>       |
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>       v
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>JpaTransactionManager
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>       |
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>       v
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a>BEGIN DB TRANSACTION
+<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a>       |
+<a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a>       ├── INSERT
+<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a>       └── UPDATE
+<a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a>       |
+<a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a>       v
+<a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a>COMMIT
+</code></pre></div>
+<p>If the method fails before completion:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>ROLLBACK
+</code></pre></div>
+<hr />
+<h2 id="kafkatransactionmanager">KafkaTransactionManager</h2>
+<p><code>KafkaTransactionManager</code> manages Kafka producer transactions.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="nd">@Transactional</span><span class="p">(</span><span class="s">"kafkaTransactionManager"</span><span class="p">)</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">publishTransfer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">    </span><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="s">"withdraw-topic"</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">    </span><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="s">"deposit-topic"</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="p">}</span>
+</code></pre></div>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>@Transactional
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>       |
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>       v
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>KafkaTransactionManager
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>       |
+<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a>       v
+<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a>BEGIN KAFKA TRANSACTION
+<a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a>       |
+<a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a>       ├── send withdrawal
+<a id="__codelineno-38-10" name="__codelineno-38-10" href="#__codelineno-38-10"></a>       └── send deposit
+<a id="__codelineno-38-11" name="__codelineno-38-11" href="#__codelineno-38-11"></a>       |
+<a id="__codelineno-38-12" name="__codelineno-38-12" href="#__codelineno-38-12"></a>       v
+<a id="__codelineno-38-13" name="__codelineno-38-13" href="#__codelineno-38-13"></a>COMMIT
+</code></pre></div>
+<p>If processing fails:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>ABORT KAFKA TRANSACTION
+</code></pre></div>
+<hr />
+<h2 id="transaction-managers-manage-their-own-resources">Transaction Managers Manage Their Own Resources</h2>
+<p>One of the most important concepts is:</p>
+<blockquote>
+<p>A transaction manager understands and manages its own transactional resource.</p>
+</blockquote>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>JpaTransactionManager
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>        |
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>        └── Database
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a>
+<a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a>
+<a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a>KafkaTransactionManager
+<a id="__codelineno-40-7" name="__codelineno-40-7" href="#__codelineno-40-7"></a>        |
+<a id="__codelineno-40-8" name="__codelineno-40-8" href="#__codelineno-40-8"></a>        └── Kafka
+</code></pre></div>
+<p><code>JpaTransactionManager</code> does not directly implement Kafka transactions.</p>
+<p>Likewise:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>KafkaTransactionManager
+</code></pre></div>
+<p>does not directly manage JPA database transactions.</p>
+<p>This distinction becomes important when a method uses both resources.</p>
+<hr />
+<h2 id="database-and-kafka-in-the-same-operation">Database and Kafka in the Same Operation</h2>
+<p>Consider:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="nd">@Transactional</span><span class="p">(</span><span class="s">"transactionManager"</span><span class="p">)</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">processTransfer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="w">    </span><span class="n">repository</span><span class="p">.</span><span class="na">save</span><span class="p">(...);</span>
+<a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a>
+<a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="w">    </span><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(</span>
+<a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a><span class="w">        </span><span class="s">"withdraw-topic"</span><span class="p">,</span>
+<a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a><span class="w">        </span><span class="p">...</span>
+<a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a><span class="w">    </span><span class="p">);</span>
+<a id="__codelineno-42-10" name="__codelineno-42-10" href="#__codelineno-42-10"></a>
+<a id="__codelineno-42-11" name="__codelineno-42-11" href="#__codelineno-42-11"></a><span class="w">    </span><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(</span>
+<a id="__codelineno-42-12" name="__codelineno-42-12" href="#__codelineno-42-12"></a><span class="w">        </span><span class="s">"deposit-topic"</span><span class="p">,</span>
+<a id="__codelineno-42-13" name="__codelineno-42-13" href="#__codelineno-42-13"></a><span class="w">        </span><span class="p">...</span>
+<a id="__codelineno-42-14" name="__codelineno-42-14" href="#__codelineno-42-14"></a><span class="w">    </span><span class="p">);</span>
+<a id="__codelineno-42-15" name="__codelineno-42-15" href="#__codelineno-42-15"></a><span class="p">}</span>
+</code></pre></div>
+<p>The method interacts with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>Database
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>+
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>Kafka
+</code></pre></div>
+<p>If <code>transactionManager</code> refers to <code>JpaTransactionManager</code>, then the database transaction is the primary Spring transaction.</p>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>@Transactional("transactionManager")
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>               |
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>               v
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a>       JpaTransactionManager
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a>               |
+<a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a>               v
+<a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a>       BEGIN DB TRANSACTION
+</code></pre></div>
+<p>However, a transaction-capable <code>KafkaTemplate</code> can synchronize Kafka transactional work with the existing Spring transaction.</p>
+<hr />
+<h2 id="kafka-transaction-synchronization">Kafka Transaction Synchronization</h2>
+<p>Spring Kafka provides integration that allows a transactional <code>KafkaTemplate</code> to synchronize a Kafka transaction with another active Spring transaction.</p>
+<p>This is an important implementation detail.</p>
+<p>The flow can look like:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>@Transactional("transactionManager")
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>               |
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>               v
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a>       JpaTransactionManager
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a>               |
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a>               v
+<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a>       BEGIN DB TRANSACTION
+<a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a>               |
+<a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a>               v
+<a id="__codelineno-45-10" name="__codelineno-45-10" href="#__codelineno-45-10"></a>       repository.save()
+<a id="__codelineno-45-11" name="__codelineno-45-11" href="#__codelineno-45-11"></a>               |
+<a id="__codelineno-45-12" name="__codelineno-45-12" href="#__codelineno-45-12"></a>               v
+<a id="__codelineno-45-13" name="__codelineno-45-13" href="#__codelineno-45-13"></a>       kafkaTemplate.send()
+<a id="__codelineno-45-14" name="__codelineno-45-14" href="#__codelineno-45-14"></a>               |
+<a id="__codelineno-45-15" name="__codelineno-45-15" href="#__codelineno-45-15"></a>               v
+<a id="__codelineno-45-16" name="__codelineno-45-16" href="#__codelineno-45-16"></a>Spring Kafka detects the active transaction
+<a id="__codelineno-45-17" name="__codelineno-45-17" href="#__codelineno-45-17"></a>               |
+<a id="__codelineno-45-18" name="__codelineno-45-18" href="#__codelineno-45-18"></a>               v
+<a id="__codelineno-45-19" name="__codelineno-45-19" href="#__codelineno-45-19"></a>Kafka transactional work is synchronized
+<a id="__codelineno-45-20" name="__codelineno-45-20" href="#__codelineno-45-20"></a>               |
+<a id="__codelineno-45-21" name="__codelineno-45-21" href="#__codelineno-45-21"></a>               v
+<a id="__codelineno-45-22" name="__codelineno-45-22" href="#__codelineno-45-22"></a>        method completes
+</code></pre></div>
+<p>There are still two transactional resources:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>Database transaction
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>+
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a>Kafka transaction
+</code></pre></div>
+<p>They are coordinated by Spring's transaction infrastructure and Spring Kafka integration.</p>
+<hr />
+<h2 id="why-kafka-can-synchronize-with-jpa">Why Kafka Can Synchronize with JPA</h2>
+<p>This behavior should not be interpreted as:</p>
+<blockquote>
+<p>Any Spring transaction manager automatically joins any other transaction manager.</p>
+</blockquote>
+<p>That is not generally true.</p>
+<p>Spring Kafka explicitly provides integration for transactional Kafka operations to synchronize with an existing Spring-managed transaction.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>Existing JPA transaction
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>        |
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>        v
+<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a>Transactional KafkaTemplate
+<a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a>        |
+<a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a>        v
+<a id="__codelineno-47-7" name="__codelineno-47-7" href="#__codelineno-47-7"></a>Kafka transaction synchronized
+</code></pre></div>
+<p>This is behavior provided by the Spring Kafka integration.</p>
+<p>It is not a universal capability of <code>PlatformTransactionManager</code>.</p>
+<hr />
+<h2 id="different-transaction-managers-do-not-automatically-join">Different Transaction Managers Do Not Automatically Join</h2>
+<p>Consider an application containing:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>JpaTransactionManager
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>JmsTransactionManager
+</code></pre></div>
+<p>If there is no explicit integration coordinating those resources:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="nd">@Transactional</span><span class="p">(</span><span class="s">"transactionManager"</span><span class="p">)</span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">process</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>
+<a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="w">    </span><span class="n">repository</span><span class="p">.</span><span class="na">save</span><span class="p">(...);</span>
+<a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a>
+<a id="__codelineno-49-6" name="__codelineno-49-6" href="#__codelineno-49-6"></a><span class="w">    </span><span class="n">sendJmsMessage</span><span class="p">(...);</span>
+<a id="__codelineno-49-7" name="__codelineno-49-7" href="#__codelineno-49-7"></a><span class="p">}</span>
+</code></pre></div>
+<p>selecting the JPA transaction manager does not automatically cause a JMS transaction manager to join that database transaction.</p>
+<p>Likewise, simply moving the JMS call into another method:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="nd">@Transactional</span><span class="p">(</span><span class="s">"jmsTransactionManager"</span><span class="p">)</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">sendMessage</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="w">    </span><span class="p">...</span>
+<a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="p">}</span>
+</code></pre></div>
+<p>does not make it part of the same database transaction.</p>
+<p>Instead, there are two transaction boundaries managed by different transaction managers.</p>
+<p>The general rule is:</p>
+<blockquote>
+<p>Using <code>@Transactional</code> does not automatically combine different transaction managers into one transaction.</p>
+</blockquote>
+<p>Cross-resource coordination must be explicitly supported or deliberately designed.</p>
+<hr />
+<h2 id="same-transaction-manager-vs-different-transaction-managers">Same Transaction Manager vs Different Transaction Managers</h2>
+<p>When nested transactional methods use the same transaction manager and compatible propagation settings, the inner method can participate in the existing transaction.</p>
+<p>Conceptually:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>@Transactional(JPA)
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>        |
+<a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a>        v
+<a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a>Outer Method
+<a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a>        |
+<a id="__codelineno-51-6" name="__codelineno-51-6" href="#__codelineno-51-6"></a>        v
+<a id="__codelineno-51-7" name="__codelineno-51-7" href="#__codelineno-51-7"></a>@Transactional(JPA)
+<a id="__codelineno-51-8" name="__codelineno-51-8" href="#__codelineno-51-8"></a>        |
+<a id="__codelineno-51-9" name="__codelineno-51-9" href="#__codelineno-51-9"></a>        v
+<a id="__codelineno-51-10" name="__codelineno-51-10" href="#__codelineno-51-10"></a>same JPA transaction
+</code></pre></div>
+<p>But:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>@Transactional(JPA)
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a>        |
+<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a>        v
+<a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a>Outer Method
+<a id="__codelineno-52-5" name="__codelineno-52-5" href="#__codelineno-52-5"></a>        |
+<a id="__codelineno-52-6" name="__codelineno-52-6" href="#__codelineno-52-6"></a>        v
+<a id="__codelineno-52-7" name="__codelineno-52-7" href="#__codelineno-52-7"></a>@Transactional(Kafka)
+</code></pre></div>
+<p>does not mean:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>one transaction
+</code></pre></div>
+<p>They are different transactional resources.</p>
+<p>This distinction is fundamental when working with multiple transaction managers.</p>
+<hr />
+<h2 id="database-kafka-commit-order">Database + Kafka Commit Order</h2>
+<p>Synchronizing Kafka with a database transaction provides useful coordination, but the two resources still have separate commits.</p>
+<p>In the common database-first arrangement:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>Application method succeeds
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>        |
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>        v
+<a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a>COMMIT DATABASE
+<a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a>        |
+<a id="__codelineno-54-6" name="__codelineno-54-6" href="#__codelineno-54-6"></a>        v
+<a id="__codelineno-54-7" name="__codelineno-54-7" href="#__codelineno-54-7"></a>COMMIT KAFKA
+</code></pre></div>
+<p>This works well when both commits succeed.</p>
+<p>However, it introduces an important failure scenario.</p>
+<hr />
+<h2 id="the-second-commit-problem">The Second-Commit Problem</h2>
+<p>Consider:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>COMMIT DATABASE   ✅
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>
+<a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a>COMMIT KAFKA      ❌
+</code></pre></div>
+<p>The database transaction has already been committed.</p>
+<p>Kafka then fails during its commit.</p>
+<p>At this point, the application cannot simply roll back the already committed database transaction.</p>
+<p>In current Spring Kafka versions, this commit failure is propagated to the caller so the application can take compensating or remedial action.</p>
+<p>The result may temporarily be:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>Database
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>    |
+<a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a>    └── change exists ✅
+<a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a>
+<a id="__codelineno-56-5" name="__codelineno-56-5" href="#__codelineno-56-5"></a>
+<a id="__codelineno-56-6" name="__codelineno-56-6" href="#__codelineno-56-6"></a>Kafka
+<a id="__codelineno-56-7" name="__codelineno-56-7" href="#__codelineno-56-7"></a>    |
+<a id="__codelineno-56-8" name="__codelineno-56-8" href="#__codelineno-56-8"></a>    └── event not successfully committed ❌
+</code></pre></div>
+<p>This demonstrates an important limitation:</p>
+<blockquote>
+<p>Synchronized database and Kafka transactions are not the same as one distributed ACID transaction.</p>
+</blockquote>
+<hr />
+<h2 id="why-it-is-not-one-global-transaction">Why It Is Not One Global Transaction</h2>
+<p>From application code, this may look like one operation:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="nd">@Transactional</span>
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">process</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a>
+<a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a><span class="w">    </span><span class="n">repository</span><span class="p">.</span><span class="na">save</span><span class="p">(...);</span>
+<a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a>
+<a id="__codelineno-57-6" name="__codelineno-57-6" href="#__codelineno-57-6"></a><span class="w">    </span><span class="n">kafkaTemplate</span><span class="p">.</span><span class="na">send</span><span class="p">(...);</span>
+<a id="__codelineno-57-7" name="__codelineno-57-7" href="#__codelineno-57-7"></a><span class="p">}</span>
+</code></pre></div>
+<p>During normal execution, failures may also appear to behave atomically:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>method throws
+<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a>     |
+<a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a>     ├── DB rollback
+<a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a>     └── Kafka abort
+</code></pre></div>
+<p>However, there are actually separate resource transactions:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>Database Transaction
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>        |
+<a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a>        └── JpaTransactionManager
+<a id="__codelineno-59-4" name="__codelineno-59-4" href="#__codelineno-59-4"></a>
+<a id="__codelineno-59-5" name="__codelineno-59-5" href="#__codelineno-59-5"></a>
+<a id="__codelineno-59-6" name="__codelineno-59-6" href="#__codelineno-59-6"></a>Kafka Transaction
+<a id="__codelineno-59-7" name="__codelineno-59-7" href="#__codelineno-59-7"></a>        |
+<a id="__codelineno-59-8" name="__codelineno-59-8" href="#__codelineno-59-8"></a>        └── Kafka transactional infrastructure
+</code></pre></div>
+<p>There is no single global commit operation that guarantees:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>COMMIT DB + KAFKA
+</code></pre></div>
+<p>as one indivisible operation.</p>
+<p>Therefore, failures during the commit phase must still be considered.</p>
+<hr />
+<h2 id="idempotency-and-commit-failures">Idempotency and Commit Failures</h2>
+<p>Suppose:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>First attempt
+<a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>
+<a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a>Database commit   ✅
+<a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a>Kafka commit      ❌
+</code></pre></div>
+<p>The original Kafka record may later be delivered again.</p>
+<p>The second attempt could then execute:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>Database operation
+<a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>Kafka publishing
+</code></pre></div>
+<p>again.</p>
+<p>Without idempotency, the already committed database operation could be duplicated.</p>
+<p>An idempotent implementation can instead detect the previous processing:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>Second attempt
+<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>
+<a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a>Check idempotency key
+<a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a>        |
+<a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a>        v
+<a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a>Already persisted
+<a id="__codelineno-63-7" name="__codelineno-63-7" href="#__codelineno-63-7"></a>        |
+<a id="__codelineno-63-8" name="__codelineno-63-8" href="#__codelineno-63-8"></a>        v
+<a id="__codelineno-63-9" name="__codelineno-63-9" href="#__codelineno-63-9"></a>Skip duplicate DB side effect
+<a id="__codelineno-63-10" name="__codelineno-63-10" href="#__codelineno-63-10"></a>        |
+<a id="__codelineno-63-11" name="__codelineno-63-11" href="#__codelineno-63-11"></a>        v
+<a id="__codelineno-63-12" name="__codelineno-63-12" href="#__codelineno-63-12"></a>Retry Kafka publication
+</code></pre></div>
+<p>This allows the application to recover from certain partial commit scenarios safely.</p>
+<hr />
+<h2 id="transactions-do-not-replace-idempotency">Transactions Do Not Replace Idempotency</h2>
+<p>Kafka transactions provide strong guarantees, but transactional applications should still consider idempotency.</p>
+<p>These mechanisms solve related but different problems.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>Kafka Transaction
+<a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a>        |
+<a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a>        v
+<a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a>Atomic Kafka operations
+<a id="__codelineno-64-5" name="__codelineno-64-5" href="#__codelineno-64-5"></a>
+<a id="__codelineno-64-6" name="__codelineno-64-6" href="#__codelineno-64-6"></a>
+<a id="__codelineno-64-7" name="__codelineno-64-7" href="#__codelineno-64-7"></a>Database Transaction
+<a id="__codelineno-64-8" name="__codelineno-64-8" href="#__codelineno-64-8"></a>        |
+<a id="__codelineno-64-9" name="__codelineno-64-9" href="#__codelineno-64-9"></a>        v
+<a id="__codelineno-64-10" name="__codelineno-64-10" href="#__codelineno-64-10"></a>Atomic database operations
+<a id="__codelineno-64-11" name="__codelineno-64-11" href="#__codelineno-64-11"></a>
+<a id="__codelineno-64-12" name="__codelineno-64-12" href="#__codelineno-64-12"></a>
+<a id="__codelineno-64-13" name="__codelineno-64-13" href="#__codelineno-64-13"></a>Idempotency
+<a id="__codelineno-64-14" name="__codelineno-64-14" href="#__codelineno-64-14"></a>        |
+<a id="__codelineno-64-15" name="__codelineno-64-15" href="#__codelineno-64-15"></a>        v
+<a id="__codelineno-64-16" name="__codelineno-64-16" href="#__codelineno-64-16"></a>Safe repeated processing
+</code></pre></div>
+<p>Together, they make failure recovery significantly safer.</p>
+<hr />
+<h2 id="transactions-and-consumer-retries">Transactions and Consumer Retries</h2>
+<p>Transactions become especially important when a Kafka listener performs multiple side effects.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>consume TransferEvent
+<a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a>        |
+<a id="__codelineno-65-3" name="__codelineno-65-3" href="#__codelineno-65-3"></a>        v
+<a id="__codelineno-65-4" name="__codelineno-65-4" href="#__codelineno-65-4"></a>update database
+<a id="__codelineno-65-5" name="__codelineno-65-5" href="#__codelineno-65-5"></a>        |
+<a id="__codelineno-65-6" name="__codelineno-65-6" href="#__codelineno-65-6"></a>        v
+<a id="__codelineno-65-7" name="__codelineno-65-7" href="#__codelineno-65-7"></a>publish withdrawal
+<a id="__codelineno-65-8" name="__codelineno-65-8" href="#__codelineno-65-8"></a>        |
+<a id="__codelineno-65-9" name="__codelineno-65-9" href="#__codelineno-65-9"></a>        v
+<a id="__codelineno-65-10" name="__codelineno-65-10" href="#__codelineno-65-10"></a>publish deposit
+</code></pre></div>
+<p>If processing fails and the Kafka record is redelivered, the application must ensure that repeating the operation does not corrupt state.</p>
+<p>This connects several Kafka concepts:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>Consumer retries
+<a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>        +
+<a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a>Transactions
+<a id="__codelineno-66-4" name="__codelineno-66-4" href="#__codelineno-66-4"></a>        +
+<a id="__codelineno-66-5" name="__codelineno-66-5" href="#__codelineno-66-5"></a>Idempotency
+<a id="__codelineno-66-6" name="__codelineno-66-6" href="#__codelineno-66-6"></a>        +
+<a id="__codelineno-66-7" name="__codelineno-66-7" href="#__codelineno-66-7"></a>DLT / recovery
+</code></pre></div>
+<p>Reliable event-driven systems usually need to consider these concepts together rather than independently.</p>
+<hr />
+<h2 id="common-mistakes">Common Mistakes</h2>
+<h3 id="assuming-transactional-means-database-transaction">Assuming @Transactional means database transaction</h3>
+<p><code>@Transactional</code> belongs to Spring's transaction abstraction.</p>
+<p>The actual resource being managed depends on the transaction manager selected for that method.</p>
+<hr />
+<h3 id="assuming-kafkatransactionmanager-manages-jpa">Assuming KafkaTransactionManager manages JPA</h3>
+<p>It does not.</p>
+<p><code>KafkaTransactionManager</code> manages Kafka transactional producers.</p>
+<p>Database transactions require an appropriate database transaction manager.</p>
+<hr />
+<h3 id="assuming-jpatransactionmanager-manages-kafka">Assuming JpaTransactionManager manages Kafka</h3>
+<p><code>JpaTransactionManager</code> manages JPA/database transactions.</p>
+<p>Transactional Kafka work can synchronize with an existing Spring transaction through Spring Kafka's integration, but this does not mean <code>JpaTransactionManager</code> itself understands Kafka.</p>
+<hr />
+<h3 id="assuming-all-transaction-managers-automatically-synchronize">Assuming all transaction managers automatically synchronize</h3>
+<p>They do not.</p>
+<p>Synchronization between different transactional resources requires explicit framework support or application architecture.</p>
+<p>Spring Kafka provides specific support for synchronizing transactional Kafka operations with an existing Spring transaction.</p>
+<hr />
+<h3 id="confusing-transactionalid-with-a-business-transaction-id">Confusing transactional.id with a business transaction ID</h3>
+<p>The Kafka <code>transactional.id</code> identifies a transactional producer.</p>
+<p>It does not identify an individual business operation or individual Kafka transaction.</p>
+<hr />
+<h3 id="forgetting-read_committed">Forgetting read_committed</h3>
+<p>A transactional producer alone does not determine what consumers can observe.</p>
+<p>Consumers that should only process committed transactional records should use the appropriate isolation level.</p>
+<hr />
+<h3 id="assuming-db-kafka-is-one-distributed-transaction">Assuming DB + Kafka is one distributed transaction</h3>
+<p>Synchronizing database and Kafka transactions does not create one globally atomic commit.</p>
+<p>One resource may successfully commit before another resource fails.</p>
+<p>Applications must account for this possibility.</p>
+<hr />
+<h3 id="assuming-transactions-eliminate-duplicate-processing">Assuming transactions eliminate duplicate processing</h3>
+<p>Transactions improve atomicity.</p>
+<p>They do not remove every scenario in which an operation may be retried or redelivered.</p>
+<p>Idempotency remains an important design principle.</p>
+<hr />
+<h2 id="interview-corner">Interview Corner</h2>
+<h3 id="what-problem-do-kafka-transactions-solve">What problem do Kafka transactions solve?</h3>
+<p>Kafka transactions allow multiple Kafka operations to be committed or aborted atomically.</p>
+<p>This prevents consumers using <code>read_committed</code> from observing only part of a logical set of Kafka writes.</p>
+<hr />
+<h3 id="what-is-kafkas-transactionalid">What is Kafka's transactional.id?</h3>
+<p><code>transactional.id</code> identifies a transactional Kafka producer.</p>
+<p>Kafka uses this identity to manage transactional state and protect against stale producers.</p>
+<p>It is not the identifier of an individual business transaction.</p>
+<hr />
+<h3 id="what-is-transaction-id-prefix-in-spring-kafka">What is transaction-id-prefix in Spring Kafka?</h3>
+<p>It provides a prefix that Spring's producer factory uses when creating transactional producer identities.</p>
+<p>This allows Spring to manage transactional Kafka producers on behalf of the application.</p>
+<hr />
+<h3 id="what-does-isolationlevelread_committed-do">What does isolation.level=read_committed do?</h3>
+<p>It prevents the consumer from returning records belonging to aborted Kafka transactions.</p>
+<p>This allows consumers to observe only successfully committed transactional writes.</p>
+<hr />
+<h3 id="what-is-kafkatransactionmanager">What is KafkaTransactionManager?</h3>
+<p><code>KafkaTransactionManager</code> is Spring Kafka's transaction manager for Kafka producer transactions.</p>
+<p>It allows Kafka transactions to participate in Spring's declarative transaction infrastructure.</p>
+<hr />
+<h3 id="what-is-jpatransactionmanager">What is JpaTransactionManager?</h3>
+<p><code>JpaTransactionManager</code> manages database transactions performed through JPA.</p>
+<p>It controls database transaction begin, commit, and rollback operations.</p>
+<hr />
+<h3 id="does-jpatransactionmanager-manage-kafka-transactions">Does JpaTransactionManager manage Kafka transactions?</h3>
+<p>No.</p>
+<p>Kafka transactions are managed by Kafka transactional infrastructure.</p>
+<p>Spring Kafka can synchronize Kafka transactional work with an existing Spring transaction, but that does not make Kafka part of <code>JpaTransactionManager</code>.</p>
+<hr />
+<h3 id="does-kafkatransactionmanager-manage-database-transactions">Does KafkaTransactionManager manage database transactions?</h3>
+<p>No.</p>
+<p>It manages Kafka transactions.</p>
+<p>Database work requires an appropriate database transaction manager.</p>
+<hr />
+<h3 id="if-two-methods-use-different-transaction-managers-do-they-automatically-share-one-transaction">If two methods use different transaction managers, do they automatically share one transaction?</h3>
+<p>No.</p>
+<p>Different transaction managers manage different transactional resources.</p>
+<p>Using <code>@Transactional</code> on both methods does not automatically create a single transaction across those resources.</p>
+<hr />
+<h3 id="are-synchronized-kafka-and-database-transactions-fully-atomic">Are synchronized Kafka and database transactions fully atomic?</h3>
+<p>Not globally.</p>
+<p>The resources still perform separate commits.</p>
+<p>One resource can commit successfully before the other resource's commit fails.</p>
+<p>Applications should account for this possibility using strategies such as idempotency or compensation.</p>
+<hr />
+<h2 id="rules-of-thumb">Rules of Thumb</h2>
+<ul>
+<li>Use Kafka transactions when multiple Kafka operations must succeed or fail together.</li>
+<li>Configure transactional producer identities when using Kafka transactions.</li>
+<li>Treat <code>transactional.id</code> as a producer identity, not a business transaction identifier.</li>
+<li>Use <code>read_committed</code> when consumers should only observe successfully committed Kafka transactions.</li>
+<li>Remember that <code>@Transactional</code> is a Spring transaction abstraction, not a database-specific annotation.</li>
+<li>Know which transaction manager is selected for every transactional boundary.</li>
+<li>Treat <code>JpaTransactionManager</code> and <code>KafkaTransactionManager</code> as managers of different resources.</li>
+<li>Do not assume different transaction managers automatically participate in one transaction.</li>
+<li>Understand that Spring Kafka provides explicit synchronization support with existing Spring transactions.</li>
+<li>Do not confuse synchronized local transactions with a globally atomic distributed transaction.</li>
+<li>Design for the possibility that one resource commits before another commit fails.</li>
+<li>Combine transaction handling with idempotency and appropriate retry/recovery strategies.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
