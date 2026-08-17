@@ -131,7 +131,7 @@ Asynchronous publishing avoids this blocking behavior when the application does 
 
 ---
 
-# Producer Acknowledgements
+## Producer Acknowledgements
 
 The `acks` producer configuration determines what acknowledgement is required before a publish is considered successful.
 
@@ -147,7 +147,7 @@ These provide different trade-offs between latency and durability.
 
 ---
 
-## acks=0
+### acks=0
 
 With:
 
@@ -173,7 +173,7 @@ This provides the weakest delivery guarantee because the producer cannot rely on
 
 ---
 
-## acks=1
+### acks=1
 
 With:
 
@@ -204,7 +204,7 @@ If the leader acknowledges the record and fails before a follower replicates it,
 
 ---
 
-## acks=all
+### acks=all
 
 With:
 
@@ -229,7 +229,7 @@ which is configured on the Kafka topic or broker side.
 
 ---
 
-# min.insync.replicas
+## min.insync.replicas
 
 `min.insync.replicas` defines the minimum number of in-sync replicas required for an `acks=all` write to succeed.
 
@@ -295,7 +295,7 @@ Potentially lower availability during broker failures
 
 ---
 
-# Producer Retries
+## Producer Retries
 
 Publishing can fail because of temporary problems.
 
@@ -319,7 +319,7 @@ The application does not normally need to implement this retry loop itself.
 
 ---
 
-## retries
+### retries
 
 The `retries` property limits how many retries Kafka Producer can perform for retriable failures.
 
@@ -352,7 +352,7 @@ Rather than primarily controlling delivery through a small retry count, Kafka ge
 
 ---
 
-## retry.backoff.ms
+### retry.backoff.ms
 
 The producer does not need to retry immediately after a retriable failure.
 
@@ -382,7 +382,7 @@ Backoff prevents the producer from repeatedly sending requests in a tight loop w
 
 ---
 
-# Producer Timeouts
+## Producer Timeouts
 
 Several timeout-related properties control different parts of record delivery.
 
@@ -397,7 +397,7 @@ They represent different scopes.
 
 ---
 
-## request.timeout.ms
+### request.timeout.ms
 
 `request.timeout.ms` controls how long the producer waits for a response to an individual broker request.
 
@@ -429,7 +429,7 @@ If the failure is retriable and the overall delivery deadline has not been reach
 
 ---
 
-## delivery.timeout.ms
+### delivery.timeout.ms
 
 `delivery.timeout.ms` places an overall bound on how long the producer may spend trying to deliver a record.
 
@@ -476,7 +476,7 @@ The producer may stop before the delivery timeout if another stopping condition 
 
 ---
 
-# retries vs delivery.timeout.ms
+## retries vs delivery.timeout.ms
 
 `retries` and `delivery.timeout.ms` do not conflict.
 
@@ -522,7 +522,7 @@ For this reason, modern Kafka commonly uses a large retry count while controllin
 
 ---
 
-# Batching and linger.ms
+## Batching and linger.ms
 
 Kafka Producer can batch multiple records together before sending them to a broker.
 
@@ -573,7 +573,7 @@ Higher linger
 
 ---
 
-# Producer Idempotence
+## Producer Idempotence
 
 Retries introduce an important problem.
 
@@ -620,7 +620,7 @@ Explicitly configuring it can make the intended behavior clear.
 
 ---
 
-## Idempotence Requirements
+### Idempotence Requirements
 
 Producer idempotence requires compatible producer settings.
 
@@ -650,7 +650,7 @@ If idempotence is explicitly enabled while incompatible properties are explicitl
 
 ---
 
-# How Producer Idempotence Works
+## How Producer Idempotence Works
 
 Kafka producer idempotence does not inspect the contents of an event to determine whether it is a duplicate.
 
@@ -689,7 +689,7 @@ Applications do not manually assign Kafka producer sequence numbers.
 
 ---
 
-# Producer Idempotence vs Application Idempotency
+## Producer Idempotence vs Application Idempotency
 
 Kafka producer idempotence should not be confused with application-level or business-level idempotency.
 
@@ -744,7 +744,7 @@ Application-level duplicate prevention requires a separate idempotency strategy.
 
 ---
 
-# In-Flight Requests
+## In-Flight Requests
 
 Kafka Producer can send multiple network requests to a broker without waiting for every previous request to receive a response.
 
@@ -790,7 +790,7 @@ This means that up to five requests may be waiting for responses on a connection
 
 ---
 
-## send() vs Produce Request
+### send() vs Produce Request
 
 An application call to:
 
@@ -832,7 +832,7 @@ Calling `send()` multiple times does not normally create a new TCP connection fo
 
 ---
 
-# Why In-Flight Requests Matter for Idempotence
+## Why In-Flight Requests Matter for Idempotence
 
 At first, in-flight requests and producer idempotence may appear unrelated.
 
@@ -882,11 +882,11 @@ This allows Kafka to maintain the required sequence and duplicate-detection stat
 
 ---
 
-# Producer Configuration vs Topic Configuration
+## Producer Configuration vs Topic Configuration
 
 Producer and topic configurations belong to different parts of Kafka.
 
-## Producer Configuration
+### Producer Configuration
 
 These properties control how the application publishes records.
 
@@ -918,7 +918,7 @@ Examples include:
 | `enable.idempotence` | Enables duplicate protection for producer retries |
 | `max.in.flight.requests.per.connection` | Maximum outstanding requests per broker connection |
 
-## Topic Configuration
+### Topic Configuration
 
 These properties or settings belong to the Kafka topic.
 
@@ -950,7 +950,7 @@ The producer determines what acknowledgement it requires, while the topic determ
 
 ---
 
-# Putting It Together
+## Putting It Together
 
 The producer lifecycle can be viewed as a pipeline:
 
@@ -1020,9 +1020,9 @@ depending on the requirements of the system.
 
 ---
 
-# Common Mistakes
+## Common Mistakes
 
-## Assuming a successful publish means the event was consumed
+### Assuming a successful publish means the event was consumed
 
 Producer acknowledgement only confirms the producer-side Kafka write according to the configured `acks` behavior.
 
@@ -1030,7 +1030,7 @@ It does not mean that a consumer has processed the event.
 
 ---
 
-## Assuming acks=1 means the record is fully replicated
+### Assuming acks=1 means the record is fully replicated
 
 `acks=1` only requires the partition leader to acknowledge the record.
 
@@ -1038,7 +1038,7 @@ Followers may not have replicated the record when the acknowledgement is returne
 
 ---
 
-## Treating min.insync.replicas as a producer property
+### Treating min.insync.replicas as a producer property
 
 `min.insync.replicas` belongs to the Kafka topic or broker configuration.
 
@@ -1046,7 +1046,7 @@ It works together with the producer's `acks=all` configuration.
 
 ---
 
-## Implementing immediate application retries for every producer failure
+### Implementing immediate application retries for every producer failure
 
 Kafka Producer already handles retriable producer failures internally.
 
@@ -1054,7 +1054,7 @@ Adding another retry mechanism around `send()` without understanding the produce
 
 ---
 
-## Assuming producer idempotence provides business idempotency
+### Assuming producer idempotence provides business idempotency
 
 Producer idempotence protects against duplicates caused by Kafka Producer's internal retries.
 
@@ -1062,7 +1062,7 @@ It does not prevent an application from explicitly publishing the same business 
 
 ---
 
-## Assuming every send() creates a new broker connection
+### Assuming every send() creates a new broker connection
 
 Kafka Producer maintains and reuses broker connections.
 
@@ -1070,7 +1070,7 @@ Multiple `send()` calls do not normally create separate TCP connections.
 
 ---
 
-## Assuming one send() equals one network request
+### Assuming one send() equals one network request
 
 Kafka Producer buffers and batches records.
 
@@ -1078,9 +1078,9 @@ Multiple application-level `send()` calls may therefore be included in a smaller
 
 ---
 
-# Interview Corner
+## Interview Corner
 
-## What is the difference between acks=0, acks=1, and acks=all?
+### What is the difference between acks=0, acks=1, and acks=all?
 
 `acks=0` does not wait for broker acknowledgement.
 
@@ -1090,7 +1090,7 @@ Multiple application-level `send()` calls may therefore be included in a smaller
 
 ---
 
-## What is the difference between request.timeout.ms and delivery.timeout.ms?
+### What is the difference between request.timeout.ms and delivery.timeout.ms?
 
 `request.timeout.ms` limits how long an individual broker request waits for a response.
 
@@ -1098,7 +1098,7 @@ Multiple application-level `send()` calls may therefore be included in a smaller
 
 ---
 
-## Why does Kafka Producer retry messages?
+### Why does Kafka Producer retry messages?
 
 Temporary failures such as network problems, broker failures, or leader changes may resolve without application intervention.
 
@@ -1106,7 +1106,7 @@ Kafka Producer can automatically retry these retriable failures.
 
 ---
 
-## What problem does producer idempotence solve?
+### What problem does producer idempotence solve?
 
 Producer idempotence prevents Kafka Producer's internal retries from causing duplicate records.
 
@@ -1114,7 +1114,7 @@ It uses producer IDs and sequence numbers rather than inspecting application-lev
 
 ---
 
-## Does producer idempotence prevent an application from publishing the same event twice?
+### Does producer idempotence prevent an application from publishing the same event twice?
 
 No.
 
@@ -1124,7 +1124,7 @@ Preventing duplicate business operations requires application-level idempotency.
 
 ---
 
-## What is an in-flight request?
+### What is an in-flight request?
 
 An in-flight request is a request that has been sent to a Kafka broker but has not yet received its response.
 
@@ -1132,7 +1132,7 @@ Kafka Producer can have multiple requests in flight simultaneously to improve th
 
 ---
 
-## Why does max.in.flight.requests.per.connection matter for idempotence?
+### Why does max.in.flight.requests.per.connection matter for idempotence?
 
 An earlier request may need to be retried while later requests are already in flight.
 
@@ -1142,7 +1142,7 @@ Limiting the number of outstanding requests allows Kafka to maintain these guara
 
 ---
 
-# Rules of Thumb
+## Rules of Thumb
 
 - Prefer asynchronous publishing when the application does not need to wait for the Kafka result.
 - Use synchronous publishing only when the application must know the result before continuing.

@@ -71,11 +71,11 @@ Every topic follows the same approach:
 
 - [Kafka Fundamentals](notes/05-messaging/01-kafka-fundamentals.md)
 - [Kafka Producer](notes/05-messaging/02-kafka-producer.md)
-- [Kafka Consumer](notes/05-messaging/03-kafka-consumer.md)]
+- [Kafka Consumer](notes/05-messaging/03-kafka-consumer.md)
 - [ ] Consumer Groups and Partition Assignment
 - [ ] Offset Management
 - [ ] Delivery Semantics
-- [ ] Kafka Transactions
+- [Kafka Transactions](notes/05-messaging/04-kafka-transaction.md)
 - [ ] Error Handling and Dead Letter Topics
 
 ### 06 - AWS

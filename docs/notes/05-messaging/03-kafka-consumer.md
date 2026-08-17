@@ -139,7 +139,7 @@ Important consumer properties include:
 
 ---
 
-# The Serialization Boundary
+## The Serialization Boundary
 
 Kafka does not transport Java objects directly.
 
@@ -179,7 +179,7 @@ This creates an important boundary between producers and consumers.
 
 ---
 
-## Sharing Event Classes
+### Sharing Event Classes
 
 One approach is to place event contracts in a shared module.
 
@@ -220,7 +220,7 @@ The important contract is the data exchanged between the applications, not neces
 
 ---
 
-# Deserialization Failures
+## Deserialization Failures
 
 Deserialization happens before the listener can process the event.
 
@@ -246,7 +246,7 @@ Without appropriate error handling, the consumer may repeatedly encounter the sa
 
 ---
 
-# ErrorHandlingDeserializer
+## ErrorHandlingDeserializer
 
 Spring Kafka provides `ErrorHandlingDeserializer` to make deserialization failures available to the listener container's error-handling infrastructure.
 
@@ -287,7 +287,7 @@ JacksonJsonDeserializer.class
 
 ---
 
-## Why This Matters
+### Why This Matters
 
 Consider an invalid record:
 
@@ -321,7 +321,7 @@ This is why logging or exception handling only inside the listener is not suffic
 
 ---
 
-# Consumer Error Handling
+## Consumer Error Handling
 
 Spring Kafka provides `DefaultErrorHandler` for handling failures during consumer processing.
 
@@ -360,7 +360,7 @@ DefaultErrorHandler
 
 ---
 
-# Dead Letter Topics
+## Dead Letter Topics
 
 A **Dead Letter Topic (DLT)** provides a destination for records that cannot be successfully processed and that the configured error-handling strategy has decided to recover rather than continue retrying.
 
@@ -407,7 +407,7 @@ It also preserves failed records so they can be investigated or potentially repr
 
 ---
 
-## DLT Does Not Mean Every Failure
+### DLT Does Not Mean Every Failure
 
 A processing failure does not automatically mean that the record should immediately be published to a DLT.
 
@@ -434,7 +434,7 @@ This can happen because:
 
 ---
 
-# Retryable and Non-Retryable Failures
+## Retryable and Non-Retryable Failures
 
 Not every failure should be treated the same way.
 
@@ -468,7 +468,7 @@ These are generally **non-retryable failures**.
 
 ---
 
-## Exception Classification
+### Exception Classification
 
 Applications can express these differences through exception types.
 
@@ -504,7 +504,7 @@ The important principle is:
 
 ---
 
-# Retry Backoff
+## Retry Backoff
 
 Retries should generally not happen continuously in a tight loop.
 
@@ -561,7 +561,7 @@ Retry #3 ❌
 
 ---
 
-# Transactions and Consumer Retries
+## Transactions and Consumer Retries
 
 Database transactions and Kafka consumer retries solve different problems.
 
@@ -612,7 +612,7 @@ More complex transaction coordination between Kafka and databases is covered sep
 
 ---
 
-# Consumer Groups
+## Consumer Groups
 
 A **consumer group** allows multiple consumer instances to cooperate when processing a topic.
 
@@ -645,7 +645,7 @@ This allows multiple partitions to be processed in parallel.
 
 ---
 
-## Partition Assignment
+### Partition Assignment
 
 Within a consumer group, a partition is assigned to one consumer at a time.
 
@@ -669,7 +669,7 @@ This preserves partition-level ordering while allowing parallel processing acros
 
 ---
 
-# Consumer Parallelism
+## Consumer Parallelism
 
 The number of partitions places an upper bound on useful consumer parallelism within a consumer group.
 
@@ -720,7 +720,7 @@ within a consumer group
 
 ---
 
-# Consumer Rebalancing
+## Consumer Rebalancing
 
 Consumer group membership can change over time.
 
@@ -767,7 +767,7 @@ This allows the remaining consumers to continue processing the workload.
 
 ---
 
-# Multiple Consumer Groups
+## Multiple Consumer Groups
 
 Consumer groups are independent from one another.
 
@@ -821,7 +821,7 @@ Multiple instances of the same service can then share a group ID to distribute t
 
 ---
 
-# Idempotent Consumers
+## Idempotent Consumers
 
 Kafka consumers must be designed with duplicate delivery in mind.
 
@@ -866,7 +866,7 @@ The consumer can therefore safely receive the same logical message multiple time
 
 ---
 
-## Idempotency Key
+### Idempotency Key
 
 One approach is to assign every logical message a unique identifier.
 
@@ -900,7 +900,7 @@ Generating a new identifier for every retry or republication would prevent the c
 
 ---
 
-# Database-Backed Idempotency
+## Database-Backed Idempotency
 
 A consumer can store processed message identifiers in a database.
 
@@ -940,7 +940,7 @@ This provides application-level duplicate detection.
 
 ---
 
-## Database Uniqueness
+### Database Uniqueness
 
 An application-level existence check alone is not sufficient protection against concurrent processing.
 
@@ -970,7 +970,7 @@ The application check remains useful for avoiding unnecessary processing and pro
 
 ---
 
-# Idempotency and Transactions
+## Idempotency and Transactions
 
 The idempotency marker and the business operation should ideally participate in the same database transaction.
 
@@ -1003,11 +1003,11 @@ The next delivery can then safely attempt the operation again.
 
 ---
 
-# Kafka Producer Idempotence vs Consumer Idempotency
+## Kafka Producer Idempotence vs Consumer Idempotency
 
 These concepts solve different problems.
 
-## Producer Idempotence
+### Producer Idempotence
 
 Producer idempotence protects against duplicate records caused by Kafka Producer's internal retries.
 
@@ -1029,7 +1029,7 @@ Kafka Producer
 Avoid duplicate append caused by producer retry
 ```
 
-## Consumer Idempotency
+### Consumer Idempotency
 
 Consumer idempotency protects business processing when the same logical record is delivered more than once.
 
@@ -1055,7 +1055,7 @@ They operate at different stages of the messaging lifecycle.
 
 ---
 
-# Kafka Headers
+## Kafka Headers
 
 Consumers can access metadata associated with received Kafka records.
 
@@ -1081,7 +1081,7 @@ Using the wrong header constant can cause argument resolution to fail before the
 
 ---
 
-# Failures Before Listener Invocation
+## Failures Before Listener Invocation
 
 Not every consumer failure occurs inside application business logic.
 
@@ -1127,7 +1127,7 @@ Infrastructure-level failures should also be observed through the Kafka error-ha
 
 ---
 
-# Observing Retry Failures
+## Observing Retry Failures
 
 A retry listener can provide visibility into failed processing attempts.
 
@@ -1166,9 +1166,9 @@ Without sufficient observability, an infrastructure failure can otherwise appear
 
 ---
 
-# Common Mistakes
+## Common Mistakes
 
-## Assuming every failure reaches the listener
+### Assuming every failure reaches the listener
 
 Deserialization, conversion, or header-resolution failures can occur before `@KafkaListener` or `@KafkaHandler` executes.
 
@@ -1176,7 +1176,7 @@ Error handling must therefore exist outside the business listener as well.
 
 ---
 
-## Retrying every exception
+### Retrying every exception
 
 Some failures cannot succeed simply by trying again.
 
@@ -1186,7 +1186,7 @@ Classify failures based on whether another attempt can reasonably change the res
 
 ---
 
-## Treating the DLT as the first response to every failure
+### Treating the DLT as the first response to every failure
 
 Temporary failures may recover after retrying.
 
@@ -1194,13 +1194,13 @@ The DLT should be part of a deliberate recovery strategy rather than the automat
 
 ---
 
-## Adding more consumers than partitions
+### Adding more consumers than partitions
 
 Additional consumers within the same consumer group do not increase processing parallelism once every partition already has an assigned consumer.
 
 ---
 
-## Assuming consumer groups prevent duplicate delivery
+### Assuming consumer groups prevent duplicate delivery
 
 Consumer groups distribute partition ownership.
 
@@ -1210,7 +1210,7 @@ Consumer applications should still be designed to safely handle duplicate proces
 
 ---
 
-## Using only exists() for idempotency
+### Using only exists() for idempotency
 
 Checking the database before inserting does not completely prevent concurrent duplicate processing.
 
@@ -1218,7 +1218,7 @@ Use a database uniqueness constraint as the final enforcement mechanism.
 
 ---
 
-## Generating a new idempotency ID during every retry
+### Generating a new idempotency ID during every retry
 
 The identifier must represent the logical message.
 
@@ -1226,7 +1226,7 @@ If every delivery receives a different identifier, duplicate detection cannot wo
 
 ---
 
-## Confusing producer idempotence with consumer idempotency
+### Confusing producer idempotence with consumer idempotency
 
 Producer idempotence protects Kafka's publishing process.
 
@@ -1236,9 +1236,9 @@ Both may be needed in the same system.
 
 ---
 
-# Interview Corner
+## Interview Corner
 
-## What is a Kafka consumer?
+### What is a Kafka consumer?
 
 A Kafka consumer reads records from Kafka topics and processes them.
 
@@ -1246,7 +1246,7 @@ Consumers typically participate in consumer groups, allowing Kafka to distribute
 
 ---
 
-## What is a consumer group?
+### What is a consumer group?
 
 A consumer group is a collection of consumers that cooperate to process topic partitions.
 
@@ -1256,7 +1256,7 @@ This allows processing to be distributed across multiple consumer instances.
 
 ---
 
-## What determines maximum consumer parallelism?
+### What determines maximum consumer parallelism?
 
 The number of partitions.
 
@@ -1266,7 +1266,7 @@ Additional consumers remain idle until partition ownership becomes available.
 
 ---
 
-## What happens when a consumer goes down?
+### What happens when a consumer goes down?
 
 Kafka detects changes in consumer group membership and can rebalance partition assignments among the remaining consumers.
 
@@ -1274,7 +1274,7 @@ This allows processing to continue without the failed consumer.
 
 ---
 
-## What happens if two applications use different consumer groups?
+### What happens if two applications use different consumer groups?
 
 Each consumer group maintains independent consumption of the topic.
 
@@ -1282,7 +1282,7 @@ This allows multiple applications to process the same stream of records for diff
 
 ---
 
-## What is a Dead Letter Topic?
+### What is a Dead Letter Topic?
 
 A Dead Letter Topic stores records that could not be successfully processed and that the configured recovery strategy has decided not to continue processing normally.
 
@@ -1290,7 +1290,7 @@ This commonly happens when a failure is non-retryable or when retry attempts hav
 
 ---
 
-## What is the difference between a retryable and non-retryable exception?
+### What is the difference between a retryable and non-retryable exception?
 
 A retryable exception represents a failure that may succeed on a later attempt, such as temporary service unavailability.
 
@@ -1298,7 +1298,7 @@ A non-retryable exception represents a failure where repeating the same operatio
 
 ---
 
-## Why use ErrorHandlingDeserializer?
+### Why use ErrorHandlingDeserializer?
 
 Deserialization occurs before listener business logic.
 
@@ -1306,7 +1306,7 @@ Deserialization occurs before listener business logic.
 
 ---
 
-## What is an idempotent consumer?
+### What is an idempotent consumer?
 
 An idempotent consumer can safely process the same logical message multiple times without repeatedly applying its business side effect.
 
@@ -1314,7 +1314,7 @@ A common implementation stores a unique message identifier and skips messages th
 
 ---
 
-## Is checking existsByMessageId() enough for idempotency?
+### Is checking existsByMessageId() enough for idempotency?
 
 Not by itself.
 
@@ -1324,7 +1324,7 @@ A database uniqueness constraint should also enforce the idempotency key.
 
 ---
 
-## Does Kafka producer idempotence make the consumer idempotent?
+### Does Kafka producer idempotence make the consumer idempotent?
 
 No.
 
@@ -1336,7 +1336,7 @@ They solve different problems.
 
 ---
 
-# Rules of Thumb
+## Rules of Thumb
 
 - Treat duplicate delivery as something consumers must be prepared to handle.
 - Use consumer groups to scale processing across partitions.
