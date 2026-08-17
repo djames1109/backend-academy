@@ -121,7 +121,7 @@ private Map<String, Object> consumerConfig() {
         ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
         environment.getRequiredProperty("spring.kafka.consumer.auto-offset-reset"),
 
-        "spring.json.trusted.packages",
+        JacksonJsonDeserializer.TRUSTED_PACKAGES,
         "*"
     );
 }
@@ -285,6 +285,8 @@ JacksonJsonDeserializer.class
 
 `ErrorHandlingDeserializer` acts as a wrapper that captures deserialization failures so Spring Kafka's error-handling infrastructure can process them appropriately.
 
+The JSON delegate still needs enough type information to build the target object. That may come from type headers, type mappings, a configured default value type, or a message-conversion setup.
+
 ---
 
 ### Why This Matters
@@ -379,7 +381,7 @@ product-created
 can be recovered to:
 
 ```text
-product-created-DLT
+product-created-dlt
 ```
 
 Conceptually:
@@ -398,7 +400,7 @@ product-created
       X still failing
       |
       v
-product-created-DLT
+product-created-dlt
 ```
 
 A DLT prevents permanently failing records from continuously blocking normal processing.

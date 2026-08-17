@@ -139,7 +139,7 @@ Transactional Kafka Producers
 
 ## Transactional ID
 
-Kafka assigns transactional producers a `transactional.id`.
+A transactional Kafka producer is configured with a `transactional.id`.
 
 It is important not to confuse this with a business transaction identifier.
 
@@ -322,7 +322,7 @@ A `read_uncommitted` consumer may therefore observe it even though the overall t
 
 ---
 
-## read_committed
+### read_committed
 
 Transactional consumers commonly use:
 
@@ -345,7 +345,7 @@ deposit fails
 ABORT
 ```
 
-a `read_committed` consumer will not treat the withdrawal record as a successfully published event.
+a `read_committed` consumer will not return the withdrawal record as part of normal consumption.
 
 Conceptually:
 
@@ -858,6 +858,8 @@ The database transaction has already been committed.
 Kafka then fails during its commit.
 
 At this point, the application cannot simply roll back the already committed database transaction.
+
+In current Spring Kafka versions, this commit failure is propagated to the caller so the application can take compensating or remedial action.
 
 The result may temporarily be:
 

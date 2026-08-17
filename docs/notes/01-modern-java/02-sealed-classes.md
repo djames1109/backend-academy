@@ -282,7 +282,7 @@ public sealed interface Event
 
 Java requires this decision to be explicit so that developers and the compiler can understand the inheritance policy of every branch.
 
-This also supports exhaustive pattern matching because the compiler knows all permitted top-level implementations.
+This can also support exhaustive pattern matching when the hierarchy remains closed enough for the compiler to know the possible implementations.
 
 ---
 

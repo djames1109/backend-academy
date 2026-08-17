@@ -217,7 +217,7 @@ spring:
 
 the producer requests the strongest acknowledgement behavior.
 
-The leader waits for the required in-sync replicas before acknowledging the write.
+The leader waits for the in-sync replicas to acknowledge the write.
 
 This configuration works together with:
 
@@ -231,7 +231,9 @@ which is configured on the Kafka topic or broker side.
 
 ## min.insync.replicas
 
-`min.insync.replicas` defines the minimum number of in-sync replicas required for an `acks=all` write to succeed.
+`min.insync.replicas` defines the minimum number of in-sync replicas that must be available for an `acks=all` write to succeed.
+
+With `acks=all`, the leader waits for all current in-sync replicas to acknowledge the write. `min.insync.replicas` controls how small the ISR is allowed to become before Kafka rejects the write instead of accepting a weaker durability condition.
 
 For example:
 
@@ -894,6 +896,8 @@ These properties control how the application publishes records.
 spring:
   kafka:
     producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
       acks: all
       retries: 10
       properties:
@@ -909,6 +913,8 @@ Examples include:
 
 | Property | Purpose |
 | --- | --- |
+| `key.serializer` | Serializer used for record keys |
+| `value.serializer` | Serializer used for record values |
 | `acks` | Required acknowledgement level |
 | `retries` | Retry limit for retriable failures |
 | `retry.backoff.ms` | Delay/base delay associated with retries |
@@ -917,6 +923,8 @@ Examples include:
 | `linger.ms` | Delay used to allow records to form larger batches |
 | `enable.idempotence` | Enables duplicate protection for producer retries |
 | `max.in.flight.requests.per.connection` | Maximum outstanding requests per broker connection |
+
+For JSON values on Spring Kafka 4, use `JacksonJsonSerializer`, which is based on Jackson 3. The older `JsonSerializer` class is deprecated for removal.
 
 ### Topic Configuration
 

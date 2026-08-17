@@ -6,7 +6,7 @@ Records were introduced to simplify classes whose primary purpose is to carry da
 
 Instead of writing constructors, getters, `equals()`, `hashCode()`, and `toString()` repeatedly, Java can generate them automatically.
 
-More importantly, records communicate intent. They tell other developers that this type represents immutable data rather than mutable state or business behavior.
+More importantly, records communicate intent. They tell other developers that this type represents shallowly immutable data rather than mutable state or business behavior.
 
 ## Why Records Exist
 
@@ -20,7 +20,7 @@ Records reduce that boilerplate while making the intent of the type explicit.
 
 A record tells both the compiler and other developers:
 
-> This object represents immutable data.
+> This object represents shallowly immutable data.
 
 Instead of focusing on how the class is implemented, records let you focus on what data the class represents.
 
@@ -110,7 +110,7 @@ The accessor method has the same name as the record component.
 
 ## Immutability
 
-Records are immutable.
+Records are shallowly immutable.
 
 Once constructed, their fields cannot be reassigned.
 
@@ -159,7 +159,7 @@ customer.accounts().add("Checking");
 
 This compiles and runs successfully.
 
-The record itself is immutable because the reference cannot change.
+The record itself is shallowly immutable because the reference cannot change.
 
 The `ArrayList` is still mutable.
 
