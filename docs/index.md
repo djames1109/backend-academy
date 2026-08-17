@@ -72,10 +72,14 @@ Every topic follows the same approach:
 - [Kafka Fundamentals](notes/05-messaging/01-kafka-fundamentals.md)
 - [Kafka Producer](notes/05-messaging/02-kafka-producer.md)
 - [Kafka Consumer](notes/05-messaging/03-kafka-consumer.md)
-- [ ] Consumer Groups and Partition Assignment
-- [ ] Offset Management
-- [ ] Delivery Semantics
 - [Kafka Transactions](notes/05-messaging/04-kafka-transaction.md)
+- [Consumer Groups and Offsets](notes/05-messaging/05-consumer-groups-and-offsets.md)
+- [Delivery Semantics](notes/05-messaging/06-delivery-semantics.md)
+- [Event-Driven Design](notes/05-messaging/07-event-driven-design.md)
+- [Avro](notes/05-messaging/avro/index.md)
+    - [Avro Fundamentals](notes/05-messaging/avro/01-avro-fundamentals.md)
+    - [Schema Registry](notes/05-messaging/avro/02-schema-registry.md)
+    - [Avro with Java and Spring Kafka](notes/05-messaging/avro/03-avro-with-java.md)
 - [ ] Error Handling and Dead Letter Topics
 
 ### 06 - AWS

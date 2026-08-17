@@ -11,11 +11,11 @@ Rather than treating messaging as simply sending data from one application to an
 - [Kafka Fundamentals](01-kafka-fundamentals.md)
 - [Kafka Producer](02-kafka-producer.md)
 - [Kafka Consumer](03-kafka-consumer.md)
-- [ ] Consumer Groups and Partition Assignment
-- [ ] Offset Management
-- [ ] Delivery Semantics
 - [Kafka Transactions](04-kafka-transaction.md)
-- [ ] Error Handling and Dead Letter Topics
+- [Avro](avro/index.md)
+    - [Avro Fundamentals](avro/01-avro-fundamentals.md)
+    - [Schema Registry](avro/02-schema-registry.md)
+    - [Avro with Java and Spring Kafka](avro/03-avro-with-java.md)
 
 ## Learning Objectives
 
@@ -44,3 +44,4 @@ The project will progressively demonstrate concepts such as:
 - Offset management
 - Error handling and retries
 - Reliable event processing
+- Avro schemas and Schema Registry
